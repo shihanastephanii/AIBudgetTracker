@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Budget Tracker - Dashboard</title>
+  <link rel="manifest" href="./manifest.json">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#f4f6ff;
+      --muted:#a8b0d3;
+      --accent:#4f7cff;
+      --accent2:#6a5cff;
+      --danger:#ff5f6d;
+      --success:#22c55e;
+      --soft:rgba(255,255,255,.08);
+      --shadow:0 18px 40px rgba(0,0,0,.45);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: radial-gradient(1000px 600px at 60% -10%, rgba(79,124,255,.35), transparent 60%),
+                  radial-gradient(900px 500px at 20% 10%, rgba(106,92,255,.25), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      min-height:100vh;
+    }
+    .app{max-width:1200px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:0 16px 80px}
+    
+    /* Topbar */
+    .topbar{
+      padding:18px 0 10px;
+      display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; background:var(--bg); z-index:40;
+      backdrop-filter:blur(12px);
+    }
+    .brand{display:flex; gap:10px; align-items:center;}
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 22px rgba(79,124,255,.25);
+      display:grid; place-items:center; font-weight:900;
+    }
+    .brand h1{font-size:14px; margin:0}
+    .brand p{margin:0; font-size:12px; color:var(--muted)}
+    .userInfo{display:flex; gap:10px; align-items:center}
+    .iconbtn{
+      width:40px; height:40px; border-radius:14px;
+      background:var(--soft);
+      border:1px solid rgba(255,255,255,.10);
+      display:grid; place-items:center;
+      cursor:pointer;
+      color:var(--text);
+    }
+    
+    /* Views */
+    .view{flex:1; display:none; padding:10px 0}
+    .view.active{display:block}
+    
+    /* Cards */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom:16px;
+    }
+    
+    /* Summary */
+    .summary{padding:20px}
+    .monthRow{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px}
+    .monthRow h2{margin:0; font-size:18px}
+    .pill{
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      font-weight:800; font-size:12px;
+    }
+    .balance{
+      padding:16px; border-radius:16px;
+      background: rgba(79,124,255,.15);
+      border:1px solid rgba(79,124,255,.25);
+      text-align:center;
+    }
+    .balance .small{font-size:12px; color:rgba(255,255,255,.78)}
+    .balance .big{font-size:36px; font-weight:1100; margin:6px 0}
+    .moneyRow{display:flex; gap:12px; margin-top:16px}
+    .moneyBox{
+      flex:1; padding:14px; border-radius:16px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .moneyBox .lbl{font-size:12px; color:rgba(255,255,255,.78)}
+    .moneyBox .val{margin-top:6px; font-size:20px; font-weight:1000}
+    .moneyBox.income .val{color:#8bffb1}
+    .moneyBox.expense .val{color:#ff8aa3}
+    
+    /* Stats Grid */
+    .statsGrid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .statCard{padding:20px}
+    .statCard h3{font-size:14px; color:var(--muted); margin:0 0 12px}
+    .statCard .value{font-size:28px; font-weight:1100; margin-bottom:8px}
+    .statCard .change{font-size:12px}
+    .statCard .change.positive{color:var(--success)}
+    .statCard .change.negative{color:var(--danger)}
+    
+    /* Chart Container */
+    .chartCard{padding:20px}
+    .chartCard h3{font-size:16px; margin:0 0 16px}
+    .chartWrap{position:relative; height:300px}
+    canvas{max-width:100%}
+    
+    /* Categories */
+    .cats{display:flex; gap:10px; overflow:auto; padding:12px 0}
+    .catChip{
+      min-width:100px; padding:12px; border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:12px; white-space:nowrap;
+    }
+    .catChip b{font-size:14px; display:block; margin-bottom:4px}
+    .catChip span{font-size:11px; color:rgba(255,255,255,.75)}
+    
+    /* Budget Alerts */
+    .alerts{padding:16px}
+    .alert{
+      padding:12px; border-radius:12px; margin-bottom:10px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .alert.warning{background:rgba(255,193,7,.15); border:1px solid rgba(255,193,7,.25); color:#fff3cd}
+    .alert.danger{background:rgba(255,95,109,.15); border:1px solid rgba(255,95,109,.25); color:#ffd8dd}
+    .alert:last-child{margin-bottom:0}
+    
+    /* Section Title */
+    .sectionTitle{
+      margin:20px 0 12px;
+      display:flex; justify-content:space-between; align-items:center;
+      font-weight:1000; font-size:16px;
+    }
+    .link{color:rgba(255,255,255,.80); font-size:12px; cursor:pointer; text-decoration:underline}
+    
+    /* List */
+    .list{padding:16px}
+    .row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px; border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      margin-bottom:10px; gap:10px;
+    }
+    .row:last-child{margin-bottom:0}
+    .row .left{display:flex; gap:12px; align-items:center}
+    .badge{
+      width:42px; height:42px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:20px;
+    }
+    .row .title{font-weight:1000; margin:0; font-size:13px}
+    .row .sub{margin:2px 0 0; font-size:11px; color:rgba(255,255,255,.72)}
+    .amt{font-weight:1100; font-size:15px}
+    .amt.neg{color:#ff8aa3}
+    .amt.pos{color:#8bffb1}
+    
+    /* Bottom nav */
+    .bottom{
+      padding:12px 16px 16px;
+      position:fixed; bottom:0; left:0; right:0;
+      background: linear-gradient(180deg, transparent, rgba(11,16,32,.85) 30%, rgba(11,16,32,.98));
+      backdrop-filter: blur(12px);
+      z-index:50;
+    }
+    .dock{
+      max-width:1200px; margin:0 auto;
+      display:flex; justify-content:center; align-items:center; gap:12px;
+    }
+    .navbtn{
+      width:52px; height:52px; border-radius:18px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      display:grid; place-items:center; cursor:pointer;
+      font-size:22px;
+    }
+    .navbtn.active{
+      background: rgba(79,124,255,.22);
+      border-color: rgba(79,124,255,.40);
+    }
+    .fab{
+      width:64px; height:64px; border-radius:22px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border:none; cursor:pointer; box-shadow: 0 20px 40px rgba(79,124,255,.30);
+      display:grid; place-items:center;
+      font-size:28px; color:white;
+      margin:0 8px;
+    }
+    
+    /* Overlays */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.65);
+      display:none; align-items:flex-end; justify-content:center;
+      padding:12px; z-index:100;
+    }
+    .overlay.show{display:flex}
+    .sheet{
+      width:min(520px, 100%);
+      background: rgba(18,26,51,.98);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      max-height:90vh;
+      overflow:auto;
+    }
+    .sheetHeader{
+      padding:16px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      position:sticky; top:0; background:rgba(18,26,51,.98); z-index:10;
+    }
+    .sheetHeader b{font-size:16px}
+    .sheetBody{padding:20px}
+    
+    /* Form Elements */
+    .seg{display:flex; gap:10px; margin-bottom:16px}
+    .seg button{
+      flex:1; padding:12px; border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:rgba(255,255,255,.92);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .seg button.active{
+      background: rgba(79,124,255,.22);
+      border-color: rgba(79,124,255,.40);
+    }
+    .field{margin-bottom:16px; display:flex; flex-direction:column; gap:8px}
+    .field label{font-size:13px; color:rgba(255,255,255,.80); font-weight:800}
+    .field input, .field select, .field textarea{
+      width:100%; padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:rgba(255,255,255,.95);
+      outline:none;
+      font-size:14px;
+    }
+    .field select option{
+      background: var(--card);
+      color: var(--text);
+      padding: 10px;
+    }
+    .field textarea{min-height:80px; resize:vertical}
+    .actions{display:flex; gap:10px; margin-top:16px}
+    .btn{
+      border:none; cursor:pointer; border-radius:16px;
+      padding:14px 20px; font-weight:900;
+      transition:all .2s;
+    }
+    .btn.primary{
+      flex:1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+    }
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.14);
+      color:rgba(255,255,255,.92);
+    }
+    .btn.danger{background: rgba(255,95,109,.15); color:#ffd8dd; border:1px solid rgba(255,95,109,.25)}
+    .hint{margin-top:12px; font-size:12px; color:rgba(255,255,255,.70); line-height:1.5}
+    .small{font-size:13px; color:rgba(255,255,255,.78)}
+    
+    /* Chat */
+    .chatWrap{height:500px; display:flex; flex-direction:column}
+    .chatBox{flex:1; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:12px}
+    .bubble{
+      max-width:85%;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      line-height:1.4;
+      font-size:13px;
+    }
+    .bubble.me{
+      margin-left:auto;
+      background: rgba(79,124,255,.22);
+      border-color: rgba(79,124,255,.35);
+    }
+    .chatInput{
+      display:flex; gap:10px; padding:16px;
+      border-top:1px solid rgba(255,255,255,.10);
+    }
+    .chatInput input{
+      flex:1; padding:12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:rgba(255,255,255,.95);
+      outline:none;
+    }
+    
+    @media (max-width: 768px) {
+      .statsGrid{grid-template-columns:1fr}
+      .chartWrap{height:250px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">AI</div>
+        <div>
+          <h1>AI Budget Tracker</h1>
+          <p id="subtitle">Welcome back!</p>
+        </div>
+      </div>
+      <div class="userInfo">
+        <button class="btn ghost" id="btnLogout" style="padding:10px 16px; border-radius:12px; font-size:13px;">Logout</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div class="view active" id="viewHome">
+      <!-- Summary Card -->
+      <div class="card summary">
+        <div class="monthRow">
+          <h2 id="monthLabel">January 2026</h2>
+          <span class="pill" id="currencyPill">USD</span>
+        </div>
+
+        <div class="balance">
+          <div class="small">Net Balance</div>
+          <div class="big" id="netVal">$0.00</div>
+        </div>
+
+        <div class="moneyRow">
+          <div class="moneyBox income">
+            <div class="lbl">Income</div>
+            <div class="val" id="incomeVal">$0.00</div>
+          </div>
+          <div class="moneyBox expense">
+            <div class="lbl">Expense</div>
+            <div class="val" id="expenseVal">$0.00</div>
+          </div>
+        </div>
+
+        <div class="cats" id="catChips"></div>
+      </div>
+
+      <!-- Budget Alerts -->
+      <div id="budgetAlertsSection" style="display:none">
+        <div class="sectionTitle">Budget Alerts</div>
+        <div class="card alerts" id="budgetAlerts"></div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="sectionTitle">Quick Stats</div>
+      <div class="statsGrid">
+        <div class="card statCard">
+          <h3>Savings Rate</h3>
+          <div class="value" id="savingsRate">0%</div>
+          <div class="change" id="savingsChange">Track income to see rate</div>
+        </div>
+        <div class="card statCard">
+          <h3>Avg Daily Spend</h3>
+          <div class="value" id="avgDaily">$0</div>
+          <div class="change">Based on expense days</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="sectionTitle">Analytics</div>
+      
+      <!-- Monthly Trend -->
+      <div class="card chartCard">
+        <h3>Monthly Trend (Last 6 Months)</h3>
+        <div class="chartWrap">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="card chartCard">
+        <h3>Spending by Category</h3>
+        <div class="chartWrap">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="sectionTitle">
+        <div>Recent Transactions</div>
+        <div class="link" id="btnRefresh">Refresh</div>
+      </div>
+      <div class="card list" id="recentList"></div>
+    </div>
+
+    <!-- CHAT VIEW -->
+    <div class="view" id="viewChat">
+      <div class="card chatWrap">
+        <div class="sheetHeader">
+          <b>AI Financial Assistant</b>
+          <button class="iconbtn" id="btnCloseChat">✕</button>
+        </div>
+        <div class="chatBox" id="chatBox"></div>
+        <div class="chatInput">
+          <input id="chatText" placeholder="Ask about your spending..." />
+          <button class="btn primary" id="btnSendChat">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom">
+      <div class="dock">
+        <button class="navbtn active" id="navHome">🏠</button>
+        <button class="navbtn" id="navVoice">🎙️</button>
+        <button class="fab" id="navAdd">＋</button>
+        <button class="navbtn" id="navScan">📷</button>
+        <button class="navbtn" id="navChat">💬</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD TRANSACTION -->
+  <div class="overlay" id="overlayAdd">
+    <div class="sheet">
+      <div class="sheetHeader">
+        <b>Add Transaction</b>
+        <button class="iconbtn" id="closeAdd">✕</button>
+      </div>
+      <div class="sheetBody">
+        <div class="seg" id="typeSeg">
+          <button data-type="expense" class="active">Expense</button>
+          <button data-type="income">Income</button>
+        </div>
+
+        <div class="field">
+          <label>Amount</label>
+          <input id="amount" type="number" step="0.01" placeholder="18.99" />
+        </div>
+
+        <div class="field">
+          <label>Category</label>
+          <select id="category">
+            <option>Food</option>
+            <option>Transport</option>
+            <option>Shopping</option>
+            <option>Utilities</option>
+            <option>Entertainment</option>
+            <option>Health</option>
+            <option>Rent</option>
+            <option>Salary</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Note</label>
+          <input id="note" placeholder="Grocery, Uber, etc." />
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input id="date" type="date" />
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnSaveEntry">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAN RECEIPT -->
+  <div class="overlay" id="overlayScan">
+    <div class="sheet">
+      <div class="sheetHeader">
+        <b>Scan Receipt</b>
+        <button class="iconbtn" id="closeScan">✕</button>
+      </div>
+      <div class="sheetBody">
+        <div class="seg" id="scanSeg">
+          <button data-mode="single" class="active">Single</button>
+          <button data-mode="multiple">Multiple</button>
+          <button data-mode="combination">Combo</button>
+        </div>
+
+        <div class="field">
+          <label>Upload Receipt Image(s)</label>
+          <input id="receiptFiles" type="file" accept="image/*" multiple />
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnRunOCR">Scan & Parse</button>
+        </div>
+
+        <div class="hint" id="ocrHint">Upload receipt → AI extracts data → Verify → Save</div>
+
+        <!-- Verification Section (Hidden initially) -->
+        <div id="verificationSection" style="display:none; margin-top:20px;">
+          <div class="sectionTitle" style="margin-top:0">
+            <div>📋 Verify Extracted Data</div>
+            <div class="small" id="extractedCount"></div>
+          </div>
+          
+          <div id="extractedItems" class="list"></div>
+          
+          <div class="actions" style="margin-top:16px;">
+            <button class="btn ghost" id="btnCancelReceipt">Cancel</button>
+            <button class="btn primary" id="btnConfirmReceipt">✓ Confirm & Save All</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>OCR Output (Debug)</label>
+          <textarea id="ocrText" placeholder="OCR result..." style="font-size:11px;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOICE ENTRY -->
+  <div class="overlay" id="overlayVoice">
+    <div class="sheet">
+      <div class="sheetHeader">
+        <b>Voice Entry</b>
+        <button class="iconbtn" id="closeVoice">✕</button>
+      </div>
+      <div class="sheetBody">
+        <div class="hint">Say: "Grocery 18.99", "Uber 12.50", "Salary 3500", or "Coffee 5 and lunch 12"</div>
+
+        <div class="actions">
+          <button class="btn ghost" id="btnStartVoice">▶ Start Recording</button>
+          <button class="btn danger" id="btnStopVoice">■ Stop</button>
+        </div>
+
+        <div class="field">
+          <label>Transcript</label>
+          <textarea id="voiceText" placeholder="Your speech will appear here..."></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnVoiceParse">Parse with AI</button>
+        </div>
+
+        <!-- Verification Section (Hidden initially) -->
+        <div id="voiceVerificationSection" style="display:none; margin-top:20px;">
+          <div class="sectionTitle" style="margin-top:0">
+            <div>📋 Verify Parsed Data</div>
+            <div class="small" id="voiceParsedCount"></div>
+          </div>
+          
+          <div id="voiceParsedItems" class="list"></div>
+          
+          <div class="actions" style="margin-top:16px;">
+            <button class="btn ghost" id="btnCancelVoice">Cancel</button>
+            <button class="btn primary" id="btnConfirmVoice">✓ Confirm & Save</button>
+          </div>
+        </div>
+
+        <div class="hint" id="voiceParsedHint"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <!-- Tesseract.js -->
+  <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:9000";
+    const $ = (id) => document.getElementById(id);
+
+    let token = localStorage.getItem("token");
+    let user = JSON.parse(localStorage.getItem("user") || "{}");
+    let entryType = "expense";
+    let scanMode = "single";
+    let recognition = null;
+    let lastParsed = null;
+    let chatBootstrapped = false;
+    let trendChart = null;
+    let pieChart = null;
+
+    // Auth check
+    if (!token) {
+      window.location.href = "index.html";
+    }
+
+    // Helper functions
+    function todayISO(){
+      const d = new Date();
+      const pad = (x)=> String(x).padStart(2,"0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+    }
+
+    function fmtMoney(n){
+      const sign = n < 0 ? "-" : "";
+      const abs = Math.abs(n);
+      return sign + "$" + abs.toFixed(2);
+    }
+
+    function monthLabel(){
+      const d = new Date();
+      return d.toLocaleString(undefined, {month:"long", year:"numeric"});
+    }
+
+    function escapeHtml(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function iconForCategory(cat){
+      const c = (cat||"").toLowerCase();
+      if(c.includes("food")) return "🍔";
+      if(c.includes("transport")) return "🚗";
+      if(c.includes("util")) return "🛠️";
+      if(c.includes("shop")) return "🛍️";
+      if(c.includes("rent")) return "🏠";
+      if(c.includes("ent")) return "🎬";
+      if(c.includes("health")) return "💊";
+      if(c.includes("salary")) return "💼";
+      return "💳";
+    }
+
+    // API calls
+    async function apiGet(path){
+      const res = await fetch(API_BASE + path, {
+        headers: {"Authorization": `Bearer ${token}`}
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+        throw new Error(await res.text());
+      }
+      return res.json();
+    }
+
+    async function apiPost(path, body){
+      const res = await fetch(API_BASE + path, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+        throw new Error(await res.text());
+      }
+      return res.json();
+    }
+
+    // Logout
+    $("btnLogout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Navigation
+    function showView(id){
+      ["viewHome", "viewChat"].forEach(v => $(v).classList.remove("active"));
+      $(id).classList.add("active");
+      
+      document.querySelectorAll(".navbtn").forEach(btn => btn.classList.remove("active"));
+      if (id === "viewHome") $("navHome").classList.add("active");
+      if (id === "viewChat") $("navChat").classList.add("active");
+    }
+
+    $("navHome").onclick = () => showView("viewHome");
+    $("navChat").onclick = () => { showView("viewChat"); bootstrapChat(); };
+    $("btnCloseChat").onclick = () => showView("viewHome");
+
+    // Overlays
+    function openOverlay(id){ $(id).classList.add("show"); }
+    function closeOverlay(id){ $(id).classList.remove("show"); }
+
+    $("navAdd").onclick = () => openOverlay("overlayAdd");
+    $("navScan").onclick = () => openOverlay("overlayScan");
+    $("navVoice").onclick = () => openOverlay("overlayVoice");
+
+    $("closeAdd").onclick = () => closeOverlay("overlayAdd");
+    $("closeScan").onclick = () => closeOverlay("overlayScan");
+    $("closeVoice").onclick = () => closeOverlay("overlayVoice");
+
+    // Segments
+    $("typeSeg").addEventListener("click",(e)=>{
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      entryType = btn.dataset.type;
+      [...$("typeSeg").querySelectorAll("button")].forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+
+    $("scanSeg").addEventListener("click",(e)=>{
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      scanMode = btn.dataset.mode;
+      [...$("scanSeg").querySelectorAll("button")].forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+
+    // Load UI
+    async function refreshUI(){
+      try {
+        $("subtitle").textContent = `Welcome, ${user.full_name || user.email}!`;
+        $("monthLabel").textContent = monthLabel();
+        $("currencyPill").textContent = user.currency || "USD";
+        
+        // Set date to today and max to today (prevent future dates)
+        const today = todayISO();
+        $("date").value = today;
+        $("date").setAttribute("max", today);
+
+        // Summary
+        const summary = await apiGet("/summary");
+        $("incomeVal").textContent = fmtMoney(summary.income);
+        $("expenseVal").textContent = fmtMoney(summary.expense);
+        $("netVal").textContent = fmtMoney(summary.net);
+
+        // Categories
+        const cats = summary.by_category || {};
+        const entries = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6);
+        if(entries.length === 0){
+          $("catChips").innerHTML = `<div class="catChip"><b>No data</b><span>Add entries</span></div>`;
+        } else {
+          $("catChips").innerHTML = entries.map(([cat, amt])=>
+            `<div class="catChip"><b>${escapeHtml(cat)}</b><span>${fmtMoney(amt)}</span></div>`
+          ).join("");
+        }
+
+        // Budget alerts
+        if (summary.budget_alerts && summary.budget_alerts.length > 0) {
+          $("budgetAlertsSection").style.display = "block";
+          $("budgetAlerts").innerHTML = summary.budget_alerts.map(alert => {
+            const cls = alert.status === "exceeded" ? "danger" : "warning";
+            const msg = alert.status === "exceeded" 
+              ? `Over budget! ${alert.category}: ${fmtMoney(alert.spent)} / ${fmtMoney(alert.limit)}`
+              : `Warning: ${alert.category}: ${fmtMoney(alert.spent)} / ${fmtMoney(alert.limit)}`;
+            return `<div class="alert ${cls}">${msg}</div>`;
+          }).join("");
+        } else {
+          $("budgetAlertsSection").style.display = "none";
+        }
+
+        // Analytics
+        const analytics = await apiGet("/analytics");
+        
+        // Stats
+        $("savingsRate").textContent = analytics.savings_rate.toFixed(1) + "%";
+        $("savingsChange").textContent = analytics.savings_rate >= 20 ? "Great!" : "Try to save more";
+        $("avgDaily").textContent = fmtMoney(analytics.avg_daily_spend);
+
+        // Monthly Trend Chart
+        if (trendChart) trendChart.destroy();
+        const trendCtx = $("trendChart").getContext("2d");
+        trendChart = new Chart(trendCtx, {
+          type: "line",
+          data: {
+            labels: analytics.monthly_trend.map(m => m.month),
+            datasets: [
+              {
+                label: "Income",
+                data: analytics.monthly_trend.map(m => m.income),
+                borderColor: "#8bffb1",
+                backgroundColor: "rgba(139,255,177,0.1)",
+                tension: 0.4
+              },
+              {
+                label: "Expense",
+                data: analytics.monthly_trend.map(m => m.expense),
+                borderColor: "#ff8aa3",
+                backgroundColor: "rgba(255,138,163,0.1)",
+                tension: 0.4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: "#f4f6ff" }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { color: "#a8b0d3" },
+                grid: { color: "rgba(255,255,255,0.05)" }
+              },
+              x: {
+                ticks: { color: "#a8b0d3" },
+                grid: { color: "rgba(255,255,255,0.05)" }
+              }
+            }
+          }
+        });
+
+        // Pie Chart
+        if (pieChart) pieChart.destroy();
+        const pieCtx = $("pieChart").getContext("2d");
+        const colors = ["#4f7cff", "#6a5cff", "#ff5f6d", "#22c55e", "#fbbf24", "#8b5cf6", "#ec4899"];
+        pieChart = new Chart(pieCtx, {
+          type: "doughnut",
+          data: {
+            labels: analytics.category_breakdown.map(c => c.category),
+            datasets: [{
+              data: analytics.category_breakdown.map(c => c.amount),
+              backgroundColor: colors,
+              borderWidth: 2,
+              borderColor: "#121a33"
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: "#f4f6ff", padding: 15 }
+              }
+            }
+          }
+        });
+
+        // Recent transactions
+        const txs = await apiGet("/transactions?limit=10");
+        renderRecent(txs.items || []);
+
+      } catch (err) {
+        console.error("Load error:", err);
+        if (err.message.includes("401")) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+      }
+    }
+
+    function renderRecent(items){
+      if(!items.length){
+        $("recentList").innerHTML = `<div class="small">No transactions yet. Add one using +</div>`;
+        return;
+      }
+      $("recentList").innerHTML = items.map(it=>{
+        const amt = it.type==="expense" ? -Math.abs(it.amount) : Math.abs(it.amount);
+        const cls = amt < 0 ? "neg" : "pos";
+        const signAmt = (amt<0 ? "" : "+") + fmtMoney(amt);
+        return `
+          <div class="row">
+            <div class="left">
+              <div class="badge">${iconForCategory(it.category)}</div>
+              <div>
+                <p class="title">${escapeHtml(it.note || it.category)}</p>
+                <p class="sub">${escapeHtml(it.category)} • ${escapeHtml(it.date)}</p>
+              </div>
+            </div>
+            <div class="amt ${cls}">${signAmt}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    $("btnRefresh").onclick = refreshUI;
+
+    // Add Transaction
+    $("btnSaveEntry").addEventListener("click", async ()=>{
+      const amount = parseFloat($("amount").value);
+      const category = $("category").value;
+      const note = $("note").value.trim();
+      const date = $("date").value || todayISO();
+
+      if(!amount || amount<=0){
+        alert("Please enter a valid amount.");
+        return;
+      }
+
+      // Validate date not in future (allow today, block tomorrow onwards)
+      const selectedDate = new Date(date + 'T00:00:00'); // Add time to ensure proper comparison
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset to midnight
+      
+      if(selectedDate > today){
+        alert("❌ Cannot add transactions for future dates. Please select today or a past date.");
+        return;
+      }
+
+      try{
+        await apiPost("/transactions", {
+          type: entryType,
+          amount,
+          category,
+          note,
+          date,
+          source: "manual"
+        });
+        closeOverlay("overlayAdd");
+        $("amount").value = "";
+        $("note").value = "";
+        $("date").value = todayISO(); // Reset to today
+        await refreshUI();
+      } catch(e){
+        alert("Save failed: " + e.message);
+      }
+    });
+
+    // Receipt OCR with Verification
+    let extractedReceiptData = [];
+    
+    $("btnRunOCR").addEventListener("click", async ()=>{
+      const files = $("receiptFiles").files;
+      if(!files || files.length===0) { alert("Choose image(s) first."); return; }
+
+      $("ocrText").value = "Running OCR... (this may take 10-30 seconds)\n";
+      $("btnRunOCR").disabled = true;
+      $("btnRunOCR").textContent = "Processing...";
+      
+      let combinedText = "";
+
+      for(let i=0; i<files.length; i++){
+        const f = files[i];
+        $("ocrText").value += `\n[${i+1}/${files.length}] Processing: ${f.name}\n`;
+        try{
+          const { data } = await Tesseract.recognize(f, "eng", {
+            logger: m => {
+              if(m.status === 'recognizing text'){
+                $("btnRunOCR").textContent = `Processing... ${Math.round(m.progress * 100)}%`;
+              }
+            }
+          });
+          const text = (data && data.text) ? data.text : "";
+          combinedText += "\n" + text;
+          $("ocrText").value += text.slice(0, 500) + "\n---\n";
+        } catch(err){
+          $("ocrText").value += `OCR failed: ${err}\n`;
+        }
+      }
+
+      // Send to backend for AI parsing
+      try{
+        $("ocrText").value += "\n🤖 AI is analyzing the receipt...\n";
+        
+        const res = await apiPost("/receipt/parse", {
+          mode: scanMode,
+          ocr_text: combinedText
+        });
+        
+        extractedReceiptData = res.extracted || [];
+        
+        $("ocrText").value += `\n✅ Found ${extractedReceiptData.length} item(s)\n`;
+        
+        if(extractedReceiptData.length === 0){
+          alert("No valid transactions found. Please try a clearer image.");
+          resetOCRForm();
+          return;
+        }
+        
+        // Show verification UI
+        displayVerificationUI(extractedReceiptData);
+        
+      } catch(e){
+        alert("AI parsing failed: " + e.message);
+        $("ocrText").value += `\n❌ Error: ${e.message}\n`;
+        resetOCRForm();
+      }
+    });
+
+    function displayVerificationUI(items){
+      $("verificationSection").style.display = "block";
+      $("extractedCount").textContent = `${items.length} item(s) found`;
+      
+      // Render extracted items for editing
+      $("extractedItems").innerHTML = items.map((item, idx) => `
+        <div class="row" style="flex-direction:column; align-items:stretch; padding:16px;" data-idx="${idx}">
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+            <div>
+              <div style="font-weight:800; font-size:14px;">${escapeHtml(item.merchant || 'Unknown')}</div>
+              <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">
+                ${item.confidence === 'high' ? '✅ High confidence' : item.confidence === 'medium' ? '⚠️ Medium confidence' : '⚠️ Low confidence - please verify'}
+              </div>
+            </div>
+            <div style="font-size:20px; font-weight:1000;">${item.amount.toFixed(2)}</div>
+          </div>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">Amount</label>
+              <input type="number" step="0.01" value="${item.amount}" 
+                     onchange="updateExtractedItem(${idx}, 'amount', parseFloat(this.value))"
+                     style="padding:10px; font-size:14px;">
+            </div>
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">Category</label>
+              <select onchange="updateExtractedItem(${idx}, 'category', this.value)"
+                      style="padding:10px; font-size:14px;">
+                ${['Food','Transport','Shopping','Utilities','Entertainment','Health','Rent','Other'].map(cat => 
+                  `<option value="${cat}" ${cat === item.category ? 'selected' : ''}>${cat}</option>`
+                ).join('')}
+              </select>
+            </div>
+          </div>
+          
+          <div class="field" style="margin:10px 0 0;">
+            <label style="font-size:11px;">Note</label>
+            <input type="text" value="${escapeHtml(item.note || '')}" 
+                   onchange="updateExtractedItem(${idx}, 'note', this.value)"
+                   style="padding:10px; font-size:14px;">
+          </div>
+          
+          <button class="btn danger" onclick="removeExtractedItem(${idx})" 
+                  style="margin-top:10px; padding:8px;">
+            🗑️ Remove this item
+          </button>
+        </div>
+      `).join("");
+      
+      // Hide scan button, show verification
+      $("btnRunOCR").style.display = "none";
+      $("receiptFiles").disabled = true;
+    }
+
+    function resetOCRForm(){
+      $("btnRunOCR").disabled = false;
+      $("btnRunOCR").textContent = "Scan & Parse";
+      $("btnRunOCR").style.display = "block";
+      $("receiptFiles").disabled = false;
+      $("verificationSection").style.display = "none";
+      extractedReceiptData = [];
+    }
+
+    window.updateExtractedItem = function(idx, field, value){
+      if(extractedReceiptData[idx]){
+        extractedReceiptData[idx][field] = value;
+      }
+    };
+
+    window.removeExtractedItem = function(idx){
+      extractedReceiptData.splice(idx, 1);
+      if(extractedReceiptData.length === 0){
+        alert("No items left. Please scan again.");
+        closeOverlay("overlayScan");
+        resetOCRForm();
+      } else {
+        displayVerificationUI(extractedReceiptData);
+      }
+    };
+
+    $("btnCancelReceipt").addEventListener("click", ()=>{
+      if(confirm("Discard all extracted items?")){
+        closeOverlay("overlayScan");
+        resetOCRForm();
+        $("receiptFiles").value = "";
+        $("ocrText").value = "";
+      }
+    });
+
+    $("btnConfirmReceipt").addEventListener("click", async ()=>{
+      if(extractedReceiptData.length === 0){
+        alert("No items to save.");
+        return;
+      }
+      
+      try{
+        $("btnConfirmReceipt").disabled = true;
+        $("btnConfirmReceipt").textContent = "Saving...";
+        
+        const res = await apiPost("/receipt/confirm", {
+          entries: extractedReceiptData
+        });
+        
+        alert(`✅ Successfully saved ${res.saved} transaction(s)!`);
+        
+        closeOverlay("overlayScan");
+        resetOCRForm();
+        $("receiptFiles").value = "";
+        $("ocrText").value = "";
+        await refreshUI();
+        
+      } catch(e){
+        alert("Save failed: " + e.message);
+      } finally {
+        $("btnConfirmReceipt").disabled = false;
+        $("btnConfirmReceipt").textContent = "✓ Confirm & Save All";
+      }
+    });
+
+    // Voice Entry with Verification
+    let parsedVoiceData = null;
+    
+    function speechSupported(){
+      return ("webkitSpeechRecognition" in window) || ("SpeechRecognition" in window);
+    }
+
+    function initSpeech(){
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SR();
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+      recognition.continuous = true;
+
+      recognition.onresult = (event)=>{
+        let finalText = "";
+        for(let i=event.resultIndex; i<event.results.length; i++){
+          finalText += event.results[i][0].transcript;
+        }
+        $("voiceText").value = finalText.trim();
+      };
+
+      recognition.onerror = (e)=>{
+        $("voiceParsedHint").textContent = "Voice error: " + (e.error || "unknown");
+      };
+    }
+
+    $("btnStartVoice").addEventListener("click", ()=>{
+      if(!speechSupported()) { 
+        alert("Voice not supported in this browser. Use Chrome on desktop for best results."); 
+        return; 
+      }
+      if(!recognition) initSpeech();
+      $("voiceParsedHint").textContent = "🎙️ Listening... Speak now!";
+      $("btnStartVoice").disabled = true;
+      $("btnStopVoice").disabled = false;
+      recognition.start();
+    });
+
+    $("btnStopVoice").addEventListener("click", ()=>{
+      if(recognition) recognition.stop();
+      $("voiceParsedHint").textContent = "Recording stopped. Click 'Parse with AI' to analyze.";
+      $("btnStartVoice").disabled = false;
+      $("btnStopVoice").disabled = true;
+    });
+
+    $("btnVoiceParse").addEventListener("click", async ()=>{
+      const text = $("voiceText").value.trim();
+      if(!text) { 
+        alert("Please record something first."); 
+        return; 
+      }
+      
+      try{
+        $("btnVoiceParse").disabled = true;
+        $("btnVoiceParse").textContent = "Parsing...";
+        $("voiceParsedHint").textContent = "🤖 AI is analyzing your speech...";
+        
+        const res = await apiPost("/voice/parse", { text });
+        parsedVoiceData = res;
+        
+        // Display verification UI
+        displayVoiceVerification(parsedVoiceData);
+        
+      } catch(e){
+        alert("Parse failed: " + e.message);
+        $("voiceParsedHint").textContent = "❌ Parsing failed. Try again.";
+      } finally {
+        $("btnVoiceParse").disabled = false;
+        $("btnVoiceParse").textContent = "Parse with AI";
+      }
+    });
+
+    function displayVoiceVerification(data){
+      $("voiceVerificationSection").style.display = "block";
+      $("voiceParsedCount").textContent = "1 transaction detected";
+      
+      const typeColor = data.type === 'income' ? '#8bffb1' : '#ff8aa3';
+      const typeIcon = data.type === 'income' ? '💰' : '💸';
+      
+      $("voiceParsedItems").innerHTML = `
+        <div class="row" style="flex-direction:column; align-items:stretch; padding:16px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+            <div>
+              <div style="font-weight:800; font-size:14px;">${typeIcon} ${data.type === 'income' ? 'Income' : 'Expense'}</div>
+              <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">
+                From voice: "${escapeHtml($("voiceText").value)}"
+              </div>
+            </div>
+            <div style="font-size:24px; font-weight:1000; color:${typeColor};">
+              ${data.amount.toFixed(2)}
+            </div>
+          </div>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">Type</label>
+              <select id="voiceEditType" style="padding:10px; font-size:14px;">
+                <option value="expense" ${data.type === 'expense' ? 'selected' : ''}>Expense</option>
+                <option value="income" ${data.type === 'income' ? 'selected' : ''}>Income</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">Amount</label>
+              <input type="number" step="0.01" id="voiceEditAmount" value="${data.amount}" 
+                     style="padding:10px; font-size:14px;">
+            </div>
+          </div>
+          
+          <div class="field" style="margin:10px 0 0;">
+            <label style="font-size:11px;">Category</label>
+            <select id="voiceEditCategory" style="padding:10px; font-size:14px;">
+              ${['Food','Transport','Shopping','Utilities','Entertainment','Health','Rent','Salary','Other'].map(cat => 
+                `<option value="${cat}" ${cat === data.category ? 'selected' : ''}>${cat}</option>`
+              ).join('')}
+            </select>
+          </div>
+          
+          <div class="field" style="margin:10px 0 0;">
+            <label style="font-size:11px;">Note</label>
+            <input type="text" id="voiceEditNote" value="${escapeHtml(data.note || '')}" 
+                   style="padding:10px; font-size:14px;">
+          </div>
+        </div>
+      `;
+      
+      $("voiceParsedHint").textContent = "✅ Parsed successfully! Review and confirm.";
+      $("btnVoiceParse").style.display = "none";
+    }
+
+    function resetVoiceForm(){
+      $("voiceVerificationSection").style.display = "none";
+      $("btnVoiceParse").style.display = "block";
+      $("voiceParsedHint").textContent = "";
+      parsedVoiceData = null;
+    }
+
+    $("btnCancelVoice").addEventListener("click", ()=>{
+      if(confirm("Discard this transaction?")){
+        closeOverlay("overlayVoice");
+        resetVoiceForm();
+        $("voiceText").value = "";
+      }
+    });
+
+    $("btnConfirmVoice").addEventListener("click", async ()=>{
+      if(!parsedVoiceData){
+        alert("No data to save.");
+        return;
+      }
+      
+      try{
+        $("btnConfirmVoice").disabled = true;
+        $("btnConfirmVoice").textContent = "Saving...";
+        
+        // Get edited values
+        const editedData = {
+          type: $("voiceEditType").value,
+          amount: parseFloat($("voiceEditAmount").value),
+          category: $("voiceEditCategory").value,
+          note: $("voiceEditNote").value,
+          date: todayISO(),
+          source: "voice"
+        };
+        
+        await apiPost("/transactions", editedData);
+        
+        alert("✅ Transaction saved successfully!");
+        
+        closeOverlay("overlayVoice");
+        resetVoiceForm();
+        $("voiceText").value = "";
+        await refreshUI();
+        
+      } catch(e){
+        alert("Save failed: " + e.message);
+      } finally {
+        $("btnConfirmVoice").disabled = false;
+        $("btnConfirmVoice").textContent = "✓ Confirm & Save";
+      }
+    });
+
+    // Chat
+    function addBubble(text, me=false){
+      const div = document.createElement("div");
+      div.className = "bubble" + (me ? " me" : "");
+      div.textContent = text;
+      $("chatBox").appendChild(div);
+      $("chatBox").scrollTop = $("chatBox").scrollHeight;
+    }
+
+    async function bootstrapChat(){
+      if(chatBootstrapped) return;
+      chatBootstrapped = true;
+      addBubble("Hi! I'm your AI financial assistant. Ask me about your spending, savings, or get budget tips!");
+    }
+
+    async function sendChat(){
+      const msg = $("chatText").value.trim();
+      if(!msg) return;
+      $("chatText").value = "";
+      addBubble(msg, true);
+
+      try{
+        const res = await apiPost("/ai/chat", { message: msg });
+        addBubble(res.reply || "No reply");
+      } catch(e){
+        addBubble("Chat failed. Try again.", false);
+      }
+    }
+
+    $("btnSendChat").addEventListener("click", sendChat);
+    $("chatText").addEventListener("keydown", (e)=>{
+      if(e.key==="Enter") sendChat();
+    });
+
+    // Init
+    refreshUI();
+  </script>
+</body>
+</html>
