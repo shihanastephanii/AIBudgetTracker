@@ -1,0 +1,10 @@
+{
+  "name": "AI Budget Tracker",
+  "short_name": "BudgetAI",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#6366f1",
+  "description": "AI budget tracker with receipts, voice input, and finance coach.",
+  "icons": []
+}
