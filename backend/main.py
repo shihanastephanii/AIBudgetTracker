@@ -35,7 +35,15 @@ openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change to your domain in production
+    allow_origins=[
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",  
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "*"  # Allow all for development
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -1012,4 +1020,5 @@ def health():
         "version": "2.0",
         "database": "postgresql",
         "ai": openai_status
+
     }
