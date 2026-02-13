@@ -36,6 +36,7 @@ openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://ai-budget-tracker-f-end.up.railway.app",
         "http://localhost:8080",
         "http://127.0.0.1:8080",
         "http://localhost:5500",
@@ -1022,3 +1023,4 @@ def health():
         "ai": openai_status
 
     }
+
