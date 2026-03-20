@@ -147,6 +147,47 @@
       font-weight:1000; font-size:16px;
     }
     .link{color:rgba(255,255,255,.80); font-size:12px; cursor:pointer; text-decoration:underline}
+
+    /* Budget Goals Section */
+    .goalsCard{padding:16px}
+    .goalItem{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px; border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      margin-bottom:10px;
+      gap:10px;
+    }
+    .goalItem:last-child{margin-bottom:0}
+    .goalLeft{display:flex; gap:10px; align-items:center; flex:1}
+    .goalInfo{flex:1}
+    .goalName{font-weight:800; font-size:13px; margin-bottom:4px}
+    .goalLimit{font-size:11px; color:rgba(255,255,255,.60)}
+    .goalBar{
+      height:4px; border-radius:2px;
+      background:rgba(255,255,255,.10);
+      margin-top:6px; overflow:hidden;
+    }
+    .goalBarFill{
+      height:100%; border-radius:2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .4s ease;
+    }
+    .goalBarFill.warn{background: linear-gradient(90deg,#fbbf24,#f59e0b)}
+    .goalBarFill.over{background: linear-gradient(90deg,var(--danger),#ff8aa3)}
+    .goalDeleteBtn{
+      width:32px; height:32px; border-radius:10px;
+      background:rgba(255,95,109,.12);
+      border:1px solid rgba(255,95,109,.20);
+      color:#ff8aa3; cursor:pointer;
+      display:grid; place-items:center;
+      font-size:14px; flex-shrink:0;
+    }
+    .goalDeleteBtn:hover{background:rgba(255,95,109,.25)}
+    .emptyGoals{
+      text-align:center; padding:20px;
+      color:rgba(255,255,255,.45); font-size:13px;
+    }
     
     /* List */
     .list{padding:16px}
@@ -156,6 +197,12 @@
       background: rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.08);
       margin-bottom:10px; gap:10px;
+      cursor:pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .row:hover{
+      background: rgba(255,255,255,.09);
+      border-color:rgba(79,124,255,.30);
     }
     .row:last-child{margin-bottom:0}
     .row .left{display:flex; gap:12px; align-items:center}
@@ -278,6 +325,10 @@
       color:rgba(255,255,255,.92);
     }
     .btn.danger{background: rgba(255,95,109,.15); color:#ffd8dd; border:1px solid rgba(255,95,109,.25)}
+    .btn.dangerSolid{
+      background: linear-gradient(135deg, #ff5f6d, #ff8aa3);
+      color:white; border:none;
+    }
     .hint{margin-top:12px; font-size:12px; color:rgba(255,255,255,.70); line-height:1.5}
     .small{font-size:13px; color:rgba(255,255,255,.78)}
     
@@ -308,6 +359,48 @@
       background: rgba(255,255,255,.06);
       color:rgba(255,255,255,.95);
       outline:none;
+    }
+
+    /* Transaction Detail Modal */
+    .txDetailHeader{
+      display:flex; align-items:center; gap:14px; margin-bottom:20px;
+    }
+    .txDetailBadge{
+      width:56px; height:56px; border-radius:18px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:28px; flex-shrink:0;
+    }
+    .txDetailTitle{font-size:17px; font-weight:900; margin:0 0 4px}
+    .txDetailSub{font-size:12px; color:rgba(255,255,255,.60)}
+    .txDetailAmount{
+      text-align:center; padding:20px;
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      margin-bottom:16px;
+    }
+    .txDetailAmount .amtLabel{font-size:12px; color:rgba(255,255,255,.55); margin-bottom:6px}
+    .txDetailAmount .amtVal{font-size:36px; font-weight:1100}
+    .txDetailAmount .amtVal.neg{color:#ff8aa3}
+    .txDetailAmount .amtVal.pos{color:#8bffb1}
+    .txDetailRow{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 0; border-bottom:1px solid rgba(255,255,255,.06);
+      font-size:13px;
+    }
+    .txDetailRow:last-of-type{border-bottom:none}
+    .txDetailRow .txKey{color:rgba(255,255,255,.55)}
+    .txDetailRow .txVal{font-weight:700}
+    .deleteConfirmArea{
+      margin-top:20px; padding:16px;
+      border-radius:14px;
+      background: rgba(255,95,109,.08);
+      border:1px solid rgba(255,95,109,.18);
+    }
+    .deleteConfirmArea p{
+      font-size:13px; color:#ffd8dd; margin:0 0 12px; text-align:center;
     }
     
     @media (max-width: 768px) {
@@ -365,6 +458,15 @@
         <div class="card alerts" id="budgetAlerts"></div>
       </div>
 
+      <!-- Budget Goals -->
+      <div class="sectionTitle">
+        <div>Budget Goals</div>
+        <button class="btn ghost" id="btnAddGoal" style="padding:8px 14px; border-radius:12px; font-size:12px; font-weight:800;">+ Add Goal</button>
+      </div>
+      <div class="card goalsCard" id="goalsCard">
+        <div class="emptyGoals">No budget goals set. Tap "+ Add Goal" to get started.</div>
+      </div>
+
       <!-- Stats Grid -->
       <div class="sectionTitle">Quick Stats</div>
       <div class="statsGrid">
@@ -383,7 +485,6 @@
       <!-- Charts -->
       <div class="sectionTitle">Analytics</div>
       
-      <!-- Monthly Trend -->
       <div class="card chartCard">
         <h3>Monthly Trend (Last 6 Months)</h3>
         <div class="chartWrap">
@@ -391,7 +492,6 @@
         </div>
       </div>
 
-      <!-- Category Breakdown -->
       <div class="card chartCard">
         <h3>Spending by Category</h3>
         <div class="chartWrap">
@@ -509,7 +609,6 @@
 
         <div class="hint" id="ocrHint">Upload receipt → AI extracts data → Verify → Save</div>
 
-        <!-- Verification Section (Hidden initially) -->
         <div id="verificationSection" style="display:none; margin-top:20px;">
           <div class="sectionTitle" style="margin-top:0">
             <div>📋 Verify Extracted Data</div>
@@ -556,7 +655,6 @@
           <button class="btn primary" id="btnVoiceParse">Parse with AI</button>
         </div>
 
-        <!-- Verification Section (Hidden initially) -->
         <div id="voiceVerificationSection" style="display:none; margin-top:20px;">
           <div class="sectionTitle" style="margin-top:0">
             <div>📋 Verify Parsed Data</div>
@@ -576,13 +674,63 @@
     </div>
   </div>
 
+  <!-- ADD BUDGET GOAL -->
+  <div class="overlay" id="overlayGoal">
+    <div class="sheet">
+      <div class="sheetHeader">
+        <b>Add Budget Goal</b>
+        <button class="iconbtn" id="closeGoal">✕</button>
+      </div>
+      <div class="sheetBody">
+        <div class="field">
+          <label>Category</label>
+          <select id="goalCategory">
+            <option>Food</option>
+            <option>Transport</option>
+            <option>Shopping</option>
+            <option>Utilities</option>
+            <option>Entertainment</option>
+            <option>Health</option>
+            <option>Rent</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Monthly Limit ($)</label>
+          <input id="goalLimit" type="number" step="0.01" min="1" placeholder="e.g. 300" />
+        </div>
+
+        <div class="hint">You'll be alerted when you reach 80% or exceed this limit.</div>
+
+        <div class="actions">
+          <button class="btn ghost" id="btnCancelGoal">Cancel</button>
+          <button class="btn primary" id="btnSaveGoal">Save Goal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSACTION DETAIL / DELETE -->
+  <div class="overlay" id="overlayTxDetail">
+    <div class="sheet">
+      <div class="sheetHeader">
+        <b>Transaction Details</b>
+        <button class="iconbtn" id="closeTxDetail">✕</button>
+      </div>
+      <div class="sheetBody" id="txDetailBody">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <!-- Tesseract.js -->
   <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <script>
-    const API_BASE = "https://aibudgettracker-production.up.railway.app";
+    const API_BASE = "http://127.0.0.1:9000";
     const $ = (id) => document.getElementById(id);
 
     let token = localStorage.getItem("token");
@@ -594,6 +742,9 @@
     let chatBootstrapped = false;
     let trendChart = null;
     let pieChart = null;
+    let currentGoals = [];
+    let currentSpending = {};
+    let selectedTx = null;
 
     // Auth check
     if (!token) {
@@ -638,6 +789,12 @@
       return "💳";
     }
 
+    function sourceLabel(src){
+      if(src === "receipt") return "📷 Receipt scan";
+      if(src === "voice") return "🎙️ Voice entry";
+      return "✏️ Manual";
+    }
+
     // API calls
     async function apiGet(path){
       const res = await fetch(API_BASE + path, {
@@ -672,6 +829,23 @@
       return res.json();
     }
 
+    async function apiDelete(path){
+      const res = await fetch(API_BASE + path, {
+        method: "DELETE",
+        headers: {"Authorization": `Bearer ${token}`}
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+        throw new Error(await res.text());
+      }
+      // Some DELETE endpoints return 204 No Content
+      const text = await res.text();
+      return text ? JSON.parse(text) : {};
+    }
+
     // Logout
     $("btnLogout").addEventListener("click", () => {
       localStorage.clear();
@@ -703,6 +877,8 @@
     $("closeAdd").onclick = () => closeOverlay("overlayAdd");
     $("closeScan").onclick = () => closeOverlay("overlayScan");
     $("closeVoice").onclick = () => closeOverlay("overlayVoice");
+    $("closeGoal").onclick = () => closeOverlay("overlayGoal");
+    $("closeTxDetail").onclick = () => closeOverlay("overlayTxDetail");
 
     // Segments
     $("typeSeg").addEventListener("click",(e)=>{
@@ -721,6 +897,156 @@
       btn.classList.add("active");
     });
 
+    // -----------------------------------------------
+    // BUDGET GOALS
+    // -----------------------------------------------
+    $("btnAddGoal").addEventListener("click", () => {
+      $("goalLimit").value = "";
+      openOverlay("overlayGoal");
+    });
+
+    $("btnCancelGoal").addEventListener("click", () => closeOverlay("overlayGoal"));
+
+    $("btnSaveGoal").addEventListener("click", async () => {
+      const category = $("goalCategory").value;
+      const monthly_limit = parseFloat($("goalLimit").value);
+
+      if (!monthly_limit || monthly_limit <= 0) {
+        alert("Please enter a valid monthly limit.");
+        return;
+      }
+
+      try {
+        $("btnSaveGoal").disabled = true;
+        $("btnSaveGoal").textContent = "Saving...";
+        await apiPost("/budget-goals", { category, monthly_limit });
+        closeOverlay("overlayGoal");
+        await refreshUI();
+      } catch(e) {
+        alert("Failed to save goal: " + e.message);
+      } finally {
+        $("btnSaveGoal").disabled = false;
+        $("btnSaveGoal").textContent = "Save Goal";
+      }
+    });
+
+    async function deleteGoal(category) {
+      if (!confirm(`Delete budget goal for "${category}"?`)) return;
+      try {
+        await apiDelete(`/budget-goals/${encodeURIComponent(category)}`);
+        await refreshUI();
+      } catch(e) {
+        // If DELETE endpoint doesn't exist, re-save with a high limit isn't ideal
+        // Try posting a replacement — but first, inform user
+        alert("Could not delete goal. Your backend may need a DELETE /budget-goals/{category} endpoint.");
+      }
+    }
+
+    function renderGoals(goals, spending) {
+      if (!goals || goals.length === 0) {
+        $("goalsCard").innerHTML = `<div class="emptyGoals">No budget goals set. Tap "+ Add Goal" to get started.</div>`;
+        return;
+      }
+
+      $("goalsCard").innerHTML = goals.map(g => {
+        const spent = spending[g.category] || 0;
+        const limit = parseFloat(g.monthly_limit);
+        const pct = Math.min((spent / limit) * 100, 100);
+        const isOver = spent >= limit;
+        const isWarn = !isOver && pct >= 80;
+        const fillClass = isOver ? "over" : isWarn ? "warn" : "";
+        const statusText = isOver
+          ? `<span style="color:#ff8aa3; font-size:10px;">⚠ Over budget</span>`
+          : isWarn
+          ? `<span style="color:#fbbf24; font-size:10px;">⚠ Near limit</span>`
+          : "";
+
+        return `
+          <div class="goalItem">
+            <div class="goalLeft">
+              <div style="font-size:22px;">${iconForCategory(g.category)}</div>
+              <div class="goalInfo">
+                <div class="goalName">${escapeHtml(g.category)} ${statusText}</div>
+                <div class="goalLimit">${fmtMoney(spent)} of ${fmtMoney(limit)} / month</div>
+                <div class="goalBar">
+                  <div class="goalBarFill ${fillClass}" style="width:${pct}%"></div>
+                </div>
+              </div>
+            </div>
+            <button class="goalDeleteBtn" onclick="deleteGoal('${escapeHtml(g.category)}')" title="Delete goal">🗑</button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // -----------------------------------------------
+    // TRANSACTION DETAIL + DELETE
+    // -----------------------------------------------
+    function openTxDetail(tx) {
+      selectedTx = tx;
+      const amt = tx.type === "expense" ? -Math.abs(tx.amount) : Math.abs(tx.amount);
+      const amtClass = amt < 0 ? "neg" : "pos";
+      const signAmt = (amt >= 0 ? "+" : "") + fmtMoney(amt);
+
+      $("txDetailBody").innerHTML = `
+        <div class="txDetailHeader">
+          <div class="txDetailBadge">${iconForCategory(tx.category)}</div>
+          <div>
+            <div class="txDetailTitle">${escapeHtml(tx.note || tx.category)}</div>
+            <div class="txDetailSub">${escapeHtml(tx.category)} • ${escapeHtml(tx.date)}</div>
+          </div>
+        </div>
+
+        <div class="txDetailAmount">
+          <div class="amtLabel">${tx.type === "expense" ? "Expense" : "Income"}</div>
+          <div class="amtVal ${amtClass}">${signAmt}</div>
+        </div>
+
+        <div class="txDetailRow">
+          <span class="txKey">Category</span>
+          <span class="txVal">${escapeHtml(tx.category)}</span>
+        </div>
+        <div class="txDetailRow">
+          <span class="txKey">Date</span>
+          <span class="txVal">${escapeHtml(tx.date)}</span>
+        </div>
+        <div class="txDetailRow">
+          <span class="txKey">Source</span>
+          <span class="txVal">${sourceLabel(tx.source)}</span>
+        </div>
+        ${tx.note ? `
+        <div class="txDetailRow">
+          <span class="txKey">Note</span>
+          <span class="txVal">${escapeHtml(tx.note)}</span>
+        </div>` : ""}
+
+        <div class="deleteConfirmArea">
+          <p>Delete this transaction permanently?</p>
+          <div style="display:flex; gap:10px;">
+            <button class="btn ghost" style="flex:1;" onclick="closeOverlay('overlayTxDetail')">Cancel</button>
+            <button class="btn dangerSolid" style="flex:1;" onclick="deleteTx(${tx.id})">🗑 Delete</button>
+          </div>
+        </div>
+      `;
+
+      openOverlay("overlayTxDetail");
+    }
+
+    async function deleteTx(id) {
+      try {
+        await apiDelete(`/transactions/${id}`);
+        closeOverlay("overlayTxDetail");
+        selectedTx = null;
+        await refreshUI();
+      } catch(e) {
+        alert("Delete failed: " + e.message);
+      }
+    }
+
+    // Make these accessible from inline onclick
+    window.deleteGoal = deleteGoal;
+    window.deleteTx = deleteTx;
+
     // Load UI
     async function refreshUI(){
       try {
@@ -728,7 +1054,6 @@
         $("monthLabel").textContent = monthLabel();
         $("currencyPill").textContent = user.currency || "USD";
         
-        // Set date to today and max to today (prevent future dates)
         const today = todayISO();
         $("date").value = today;
         $("date").setAttribute("max", today);
@@ -738,6 +1063,9 @@
         $("incomeVal").textContent = fmtMoney(summary.income);
         $("expenseVal").textContent = fmtMoney(summary.expense);
         $("netVal").textContent = fmtMoney(summary.net);
+
+        // Store spending for goals display
+        currentSpending = summary.by_category || {};
 
         // Categories
         const cats = summary.by_category || {};
@@ -764,10 +1092,14 @@
           $("budgetAlertsSection").style.display = "none";
         }
 
+        // Budget Goals
+        const goalsData = await apiGet("/budget-goals");
+        currentGoals = goalsData.goals || [];
+        renderGoals(currentGoals, currentSpending);
+
         // Analytics
         const analytics = await apiGet("/analytics");
         
-        // Stats
         $("savingsRate").textContent = analytics.savings_rate.toFixed(1) + "%";
         $("savingsChange").textContent = analytics.savings_rate >= 20 ? "Great!" : "Try to save more";
         $("avgDaily").textContent = fmtMoney(analytics.avg_daily_spend);
@@ -868,7 +1200,7 @@
         const cls = amt < 0 ? "neg" : "pos";
         const signAmt = (amt<0 ? "" : "+") + fmtMoney(amt);
         return `
-          <div class="row">
+          <div class="row" data-id="${it.id}" title="Tap to view details">
             <div class="left">
               <div class="badge">${iconForCategory(it.category)}</div>
               <div>
@@ -876,10 +1208,22 @@
                 <p class="sub">${escapeHtml(it.category)} • ${escapeHtml(it.date)}</p>
               </div>
             </div>
-            <div class="amt ${cls}">${signAmt}</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="amt ${cls}">${signAmt}</div>
+              <div style="font-size:16px; color:rgba(255,255,255,.30);">›</div>
+            </div>
           </div>
         `;
       }).join("");
+
+      // Attach click listeners — store the tx data on each row
+      $("recentList").querySelectorAll(".row").forEach(row => {
+        const id = parseInt(row.dataset.id);
+        const tx = items.find(i => i.id === id);
+        if (tx) {
+          row.addEventListener("click", () => openTxDetail(tx));
+        }
+      });
     }
 
     $("btnRefresh").onclick = refreshUI;
@@ -896,10 +1240,9 @@
         return;
       }
 
-      // Validate date not in future (allow today, block tomorrow onwards)
-      const selectedDate = new Date(date + 'T00:00:00'); // Add time to ensure proper comparison
+      const selectedDate = new Date(date + 'T00:00:00');
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Reset to midnight
+      today.setHours(0, 0, 0, 0);
       
       if(selectedDate > today){
         alert("❌ Cannot add transactions for future dates. Please select today or a past date.");
@@ -918,7 +1261,7 @@
         closeOverlay("overlayAdd");
         $("amount").value = "";
         $("note").value = "";
-        $("date").value = todayISO(); // Reset to today
+        $("date").value = todayISO();
         await refreshUI();
       } catch(e){
         alert("Save failed: " + e.message);
@@ -957,7 +1300,6 @@
         }
       }
 
-      // Send to backend for AI parsing
       try{
         $("ocrText").value += "\n🤖 AI is analyzing the receipt...\n";
         
@@ -976,7 +1318,6 @@
           return;
         }
         
-        // Show verification UI
         displayVerificationUI(extractedReceiptData);
         
       } catch(e){
@@ -990,7 +1331,6 @@
       $("verificationSection").style.display = "block";
       $("extractedCount").textContent = `${items.length} item(s) found`;
       
-      // Render extracted items for editing
       $("extractedItems").innerHTML = items.map((item, idx) => `
         <div class="row" style="flex-direction:column; align-items:stretch; padding:16px;" data-idx="${idx}">
           <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
@@ -1035,7 +1375,6 @@
         </div>
       `).join("");
       
-      // Hide scan button, show verification
       $("btnRunOCR").style.display = "none";
       $("receiptFiles").disabled = true;
     }
@@ -1166,7 +1505,6 @@
         const res = await apiPost("/voice/parse", { text });
         parsedVoiceData = res;
         
-        // Display verification UI
         displayVoiceVerification(parsedVoiceData);
         
       } catch(e){
@@ -1260,7 +1598,6 @@
         $("btnConfirmVoice").disabled = true;
         $("btnConfirmVoice").textContent = "Saving...";
         
-        // Get edited values
         const editedData = {
           type: $("voiceEditType").value,
           amount: parseFloat($("voiceEditAmount").value),
@@ -1325,5 +1662,4 @@
     refreshUI();
   </script>
 </body>
-
 </html>
