@@ -25,7 +25,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_hex(32))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  
 
 app = FastAPI(title="AI Budget Tracker API", version="2.0")
 
@@ -36,7 +36,6 @@ openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://ai-budget-tracker-f-end.up.railway.app",
         "http://localhost:8080",
         "http://127.0.0.1:8080",
         "http://localhost:5500",
@@ -54,9 +53,8 @@ app.add_middleware(
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
-# -------------------------
 # Database helpers
-# -------------------------
+
 def get_db():
     """Get database connection"""
     conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
@@ -87,9 +85,9 @@ def db_execute(query: str, params: tuple = None, fetch: str = None):
     finally:
         conn.close()
 
-# -------------------------
+
 # Auth Models
-# -------------------------
+
 class UserRegister(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=6)
@@ -111,9 +109,9 @@ class UserOut(BaseModel):
     currency: str
     created_at: str
 
-# -------------------------
+
 # Transaction Models
-# -------------------------
+
 class TxCreate(BaseModel):
     type: str = Field(..., pattern="^(income|expense)$")
     amount: float = Field(..., gt=0)
@@ -178,9 +176,9 @@ class VoiceParseOut(BaseModel):
     category: str
     note: str
 
-# -------------------------
+
 # Auth Helpers
-# -------------------------
+
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -205,9 +203,9 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-# -------------------------
+
 # Categorizer
-# -------------------------
+
 CATEGORY_RULES = [
     ("Food", ["grocery", "grocer", "restaurant", "cafe", "coffee", "pizza", "burger", "mcd", "kfc", "food", "superstore", "walmart", "costco"]),
     ("Transport", ["uber", "lyft", "bus", "taxi", "fuel", "petrol", "gas", "shell", "esso", "chevron", "transit", "parking"]),
@@ -226,9 +224,9 @@ def categorize_from_text(text: str) -> str:
             return cat
     return "Other"
 
-# -------------------------
+
 # Receipt Parsing with OpenAI (Enhanced)
-# -------------------------
+
 AMOUNT_RE = re.compile(r"(?<!\d)(\d{1,5}(?:[.,]\d{2})?)(?!\d)")
 
 def extract_amounts(text: str) -> List[float]:
@@ -417,9 +415,9 @@ Each object needs:
     
     return entries
 
-# -------------------------
+
 # Voice Parsing with OpenAI (Enhanced)
-# -------------------------
+
 def parse_voice_text(text: str) -> VoiceParseOut:
     """Enhanced voice parsing with OpenAI - handles single transaction for now"""
     t = (text or "").strip()
@@ -507,9 +505,9 @@ Examples:
 
     return VoiceParseOut(type=tx_type, amount=round(amount, 2), category=category, note=note)
 
-# -------------------------
+
 # AI Chat with OpenAI
-# -------------------------
+
 async def get_ai_response(message: str, user_context: Dict[str, Any]) -> str:
     """AI-powered financial assistant using OpenAI"""
     
@@ -613,9 +611,9 @@ def get_simple_response(message: str, user_context: Dict[str, Any]) -> str:
     
     return "I can help with: spending analysis, savings tips, budget advice. Try asking 'How much did I spend?' or 'Give me tips'."
 
-# -------------------------
+
 # Auth Endpoints
-# -------------------------
+
 @app.post("/auth/register", response_model=Token)
 async def register(user: UserRegister):
     # Check if user exists
@@ -698,9 +696,8 @@ async def get_me(current_user: Dict = Depends(get_current_user)):
         created_at=str(user["created_at"])
     )
 
-# -------------------------
 # Transaction Endpoints
-# -------------------------
+
 @app.post("/transactions", response_model=TxOut)
 async def create_tx(tx: TxCreate, current_user: Dict = Depends(get_current_user)):
     try:
@@ -760,6 +757,23 @@ async def list_txs(limit: int = 50, current_user: Dict = Depends(get_current_use
         ))
     
     return TxList(items=items)
+
+@app.delete("/transactions/{tx_id}")
+async def delete_transaction(tx_id: int, current_user: Dict = Depends(get_current_user)):
+    """Delete a transaction by ID (only if it belongs to the current user)"""
+    existing = db_execute(
+        "SELECT id FROM transactions WHERE id = %s AND user_id = %s",
+        (tx_id, current_user["user_id"]),
+        fetch="one"
+    )
+    if not existing:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+ 
+    db_execute(
+        "DELETE FROM transactions WHERE id = %s AND user_id = %s",
+        (tx_id, current_user["user_id"])
+    )
+    return {"status": "deleted", "id": tx_id}
 
 @app.get("/summary", response_model=SummaryOut)
 async def summary(current_user: Dict = Depends(get_current_user)):
@@ -919,9 +933,7 @@ async def analytics(current_user: Dict = Depends(get_current_user)):
         avg_daily_spend=avg_daily_spend
     )
 
-# -------------------------
 # Budget Goals
-# -------------------------
 @app.post("/budget-goals")
 async def set_budget_goal(goal: BudgetGoal, current_user: Dict = Depends(get_current_user)):
     # Delete existing
@@ -948,9 +960,24 @@ async def get_budget_goals(current_user: Dict = Depends(get_current_user)):
     goals = [dict(r) for r in rows]
     return {"goals": goals}
 
-# -------------------------
-# Receipt & Voice
-# -------------------------
+@app.delete("/budget-goals/{category}")
+async def delete_budget_goal(category: str, current_user: Dict = Depends(get_current_user)):
+    """Delete a budget goal by category"""
+    existing = db_execute(
+        "SELECT id FROM budget_goals WHERE user_id = %s AND category = %s",
+        (current_user["user_id"], category),
+        fetch="one"
+    )
+    if not existing:
+        raise HTTPException(status_code=404, detail="Budget goal not found")
+ 
+    db_execute(
+        "DELETE FROM budget_goals WHERE user_id = %s AND category = %s",
+        (current_user["user_id"], category)
+    )
+    return {"status": "deleted", "category": category}
+ 
+# Receipt
 @app.post("/receipt/parse", response_model=ReceiptResult)
 async def receipt_parse(payload: ReceiptIngest, current_user: Dict = Depends(get_current_user)):
     """Parse receipt and return extracted data for user verification - DOES NOT SAVE YET"""
@@ -995,9 +1022,7 @@ async def receipt_confirm(payload: Dict[str, Any], current_user: Dict = Depends(
 async def voice_parse(payload: VoiceParseIn):
     return parse_voice_text(payload.text)
 
-# -------------------------
 # AI Chat
-# -------------------------
 @app.post("/ai/chat", response_model=ChatOut)
 async def ai_chat(payload: ChatIn, current_user: Dict = Depends(get_current_user)):
     summary_data = await summary(current_user)
@@ -1009,10 +1034,7 @@ async def ai_chat(payload: ChatIn, current_user: Dict = Depends(get_current_user
     
     reply = await get_ai_response(payload.message, context)
     return ChatOut(reply=reply)
-
-# -------------------------
 # Health
-# -------------------------
 @app.get("/health")
 def health():
     openai_status = "enabled" if openai_client else "disabled (using fallback)"
@@ -1021,6 +1043,4 @@ def health():
         "version": "2.0",
         "database": "postgresql",
         "ai": openai_status
-
     }
-
