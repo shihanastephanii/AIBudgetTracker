@@ -424,7 +424,7 @@
       </div>
     </div>
 
-    <!-- DASHBOARD VIEW -->
+    <!-- dashboard view -->
     <div class="view active" id="viewHome">
       <!-- Summary Card -->
       <div class="card summary">
@@ -792,7 +792,7 @@
     function sourceLabel(src){
       if(src === "receipt") return "📷 Receipt scan";
       if(src === "voice") return "🎙️ Voice entry";
-      return "✏️ Manual";
+      return "Manual";
     }
 
     // API calls
@@ -936,7 +936,7 @@
         await apiDelete(`/budget-goals/${encodeURIComponent(category)}`);
         await refreshUI();
       } catch(e) {
-        // If DELETE endpoint doesn't exist, re-save with a high limit isn't ideal
+
         // Try posting a replacement — but first, inform user
         alert("Could not delete goal. Your backend may need a DELETE /budget-goals/{category} endpoint.");
       }
@@ -979,9 +979,8 @@
       }).join("");
     }
 
-    // -----------------------------------------------
+
     // TRANSACTION DETAIL + DELETE
-    // -----------------------------------------------
     function openTxDetail(tx) {
       selectedTx = tx;
       const amt = tx.type === "expense" ? -Math.abs(tx.amount) : Math.abs(tx.amount);
@@ -1245,7 +1244,7 @@
       today.setHours(0, 0, 0, 0);
       
       if(selectedDate > today){
-        alert("❌ Cannot add transactions for future dates. Please select today or a past date.");
+        alert("Cannot add transactions for future dates. Please select today or a past date.");
         return;
       }
 
@@ -1301,7 +1300,7 @@
       }
 
       try{
-        $("ocrText").value += "\n🤖 AI is analyzing the receipt...\n";
+        $("ocrText").value += "\n AI is analyzing the receipt...\n";
         
         const res = await apiPost("/receipt/parse", {
           mode: scanMode,
@@ -1322,7 +1321,7 @@
         
       } catch(e){
         alert("AI parsing failed: " + e.message);
-        $("ocrText").value += `\n❌ Error: ${e.message}\n`;
+        $("ocrText").value += `\n Error: ${e.message}\n`;
         resetOCRForm();
       }
     });
@@ -1337,7 +1336,7 @@
             <div>
               <div style="font-weight:800; font-size:14px;">${escapeHtml(item.merchant || 'Unknown')}</div>
               <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">
-                ${item.confidence === 'high' ? '✅ High confidence' : item.confidence === 'medium' ? '⚠️ Medium confidence' : '⚠️ Low confidence - please verify'}
+                ${item.confidence === 'high' ? 'High confidence' : item.confidence === 'medium' ? 'Medium confidence' : 'Low confidence - please verify'}
               </div>
             </div>
             <div style="font-size:20px; font-weight:1000;">${item.amount.toFixed(2)}</div>
@@ -1428,7 +1427,7 @@
           entries: extractedReceiptData
         });
         
-        alert(`✅ Successfully saved ${res.saved} transaction(s)!`);
+        alert(`Successfully saved ${res.saved} transaction(s)!`);
         
         closeOverlay("overlayScan");
         resetOCRForm();
@@ -1500,7 +1499,7 @@
       try{
         $("btnVoiceParse").disabled = true;
         $("btnVoiceParse").textContent = "Parsing...";
-        $("voiceParsedHint").textContent = "🤖 AI is analyzing your speech...";
+        $("voiceParsedHint").textContent = "AI is analyzing your speech...";
         
         const res = await apiPost("/voice/parse", { text });
         parsedVoiceData = res;
@@ -1569,7 +1568,7 @@
         </div>
       `;
       
-      $("voiceParsedHint").textContent = "✅ Parsed successfully! Review and confirm.";
+      $("voiceParsedHint").textContent = "Parsed successfully! Review and confirm.";
       $("btnVoiceParse").style.display = "none";
     }
 
@@ -1609,7 +1608,7 @@
         
         await apiPost("/transactions", editedData);
         
-        alert("✅ Transaction saved successfully!");
+        alert("Transaction saved successfully!");
         
         closeOverlay("overlayVoice");
         resetVoiceForm();
