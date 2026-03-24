@@ -30,8 +30,6 @@
       min-height:100vh;
     }
     .app{max-width:1200px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:0 16px 80px}
-    
-    /* Topbar */
     .topbar{
       padding:18px 0 10px;
       display:flex; align-items:center; justify-content:space-between;
@@ -56,12 +54,8 @@
       cursor:pointer;
       color:var(--text);
     }
-    
-    /* Views */
     .view{flex:1; display:none; padding:10px 0}
     .view.active{display:block}
-    
-    /* Cards */
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.10);
@@ -69,8 +63,6 @@
       box-shadow: var(--shadow);
       margin-bottom:16px;
     }
-    
-    /* Summary */
     .summary{padding:20px}
     .monthRow{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px}
     .monthRow h2{margin:0; font-size:18px}
@@ -98,8 +90,6 @@
     .moneyBox .val{margin-top:6px; font-size:20px; font-weight:1000}
     .moneyBox.income .val{color:#8bffb1}
     .moneyBox.expense .val{color:#ff8aa3}
-    
-    /* Stats Grid */
     .statsGrid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
@@ -112,14 +102,10 @@
     .statCard .change{font-size:12px}
     .statCard .change.positive{color:var(--success)}
     .statCard .change.negative{color:var(--danger)}
-    
-    /* Chart Container */
     .chartCard{padding:20px}
     .chartCard h3{font-size:16px; margin:0 0 16px}
     .chartWrap{position:relative; height:300px}
     canvas{max-width:100%}
-    
-    /* Categories */
     .cats{display:flex; gap:10px; overflow:auto; padding:12px 0}
     .catChip{
       min-width:100px; padding:12px; border-radius:14px;
@@ -129,8 +115,6 @@
     }
     .catChip b{font-size:14px; display:block; margin-bottom:4px}
     .catChip span{font-size:11px; color:rgba(255,255,255,.75)}
-    
-    /* Budget Alerts */
     .alerts{padding:16px}
     .alert{
       padding:12px; border-radius:12px; margin-bottom:10px;
@@ -139,16 +123,12 @@
     .alert.warning{background:rgba(255,193,7,.15); border:1px solid rgba(255,193,7,.25); color:#fff3cd}
     .alert.danger{background:rgba(255,95,109,.15); border:1px solid rgba(255,95,109,.25); color:#ffd8dd}
     .alert:last-child{margin-bottom:0}
-    
-    /* Section Title */
     .sectionTitle{
       margin:20px 0 12px;
       display:flex; justify-content:space-between; align-items:center;
       font-weight:1000; font-size:16px;
     }
     .link{color:rgba(255,255,255,.80); font-size:12px; cursor:pointer; text-decoration:underline}
-
-    /* Budget Goals Section */
     .goalsCard{padding:16px}
     .goalItem{
       display:flex; align-items:center; justify-content:space-between;
@@ -188,8 +168,6 @@
       text-align:center; padding:20px;
       color:rgba(255,255,255,.45); font-size:13px;
     }
-    
-    /* List */
     .list{padding:16px}
     .row{
       display:flex; align-items:center; justify-content:space-between;
@@ -200,10 +178,7 @@
       cursor:pointer;
       transition: background .15s, border-color .15s;
     }
-    .row:hover{
-      background: rgba(255,255,255,.09);
-      border-color:rgba(79,124,255,.30);
-    }
+    .row:hover{background: rgba(255,255,255,.09); border-color:rgba(79,124,255,.30);}
     .row:last-child{margin-bottom:0}
     .row .left{display:flex; gap:12px; align-items:center}
     .badge{
@@ -218,8 +193,6 @@
     .amt{font-weight:1100; font-size:15px}
     .amt.neg{color:#ff8aa3}
     .amt.pos{color:#8bffb1}
-    
-    /* Bottom nav */
     .bottom{
       padding:12px 16px 16px;
       position:fixed; bottom:0; left:0; right:0;
@@ -238,10 +211,7 @@
       display:grid; place-items:center; cursor:pointer;
       font-size:22px;
     }
-    .navbtn.active{
-      background: rgba(79,124,255,.22);
-      border-color: rgba(79,124,255,.40);
-    }
+    .navbtn.active{background: rgba(79,124,255,.22); border-color: rgba(79,124,255,.40);}
     .fab{
       width:64px; height:64px; border-radius:22px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -250,8 +220,6 @@
       font-size:28px; color:white;
       margin:0 8px;
     }
-    
-    /* Overlays */
     .overlay{
       position:fixed; inset:0;
       background: rgba(0,0,0,.65);
@@ -276,8 +244,6 @@
     }
     .sheetHeader b{font-size:16px}
     .sheetBody{padding:20px}
-    
-    /* Form Elements */
     .seg{display:flex; gap:10px; margin-bottom:16px}
     .seg button{
       flex:1; padding:12px; border-radius:14px;
@@ -287,10 +253,7 @@
       font-weight:800;
       cursor:pointer;
     }
-    .seg button.active{
-      background: rgba(79,124,255,.22);
-      border-color: rgba(79,124,255,.40);
-    }
+    .seg button.active{background: rgba(79,124,255,.22); border-color: rgba(79,124,255,.40);}
     .field{margin-bottom:16px; display:flex; flex-direction:column; gap:8px}
     .field label{font-size:13px; color:rgba(255,255,255,.80); font-weight:800}
     .field input, .field select, .field textarea{
@@ -302,37 +265,16 @@
       outline:none;
       font-size:14px;
     }
-    .field select option{
-      background: var(--card);
-      color: var(--text);
-      padding: 10px;
-    }
+    .field select option{background: var(--card); color: var(--text); padding: 10px;}
     .field textarea{min-height:80px; resize:vertical}
     .actions{display:flex; gap:10px; margin-top:16px}
-    .btn{
-      border:none; cursor:pointer; border-radius:16px;
-      padding:14px 20px; font-weight:900;
-      transition:all .2s;
-    }
-    .btn.primary{
-      flex:1;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color:white;
-    }
-    .btn.ghost{
-      background:transparent;
-      border:1px solid rgba(255,255,255,.14);
-      color:rgba(255,255,255,.92);
-    }
+    .btn{border:none; cursor:pointer; border-radius:16px; padding:14px 20px; font-weight:900; transition:all .2s;}
+    .btn.primary{flex:1; background: linear-gradient(135deg, var(--accent), var(--accent2)); color:white;}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.14); color:rgba(255,255,255,.92);}
     .btn.danger{background: rgba(255,95,109,.15); color:#ffd8dd; border:1px solid rgba(255,95,109,.25)}
-    .btn.dangerSolid{
-      background: linear-gradient(135deg, #ff5f6d, #ff8aa3);
-      color:white; border:none;
-    }
+    .btn.dangerSolid{background: linear-gradient(135deg, #ff5f6d, #ff8aa3); color:white; border:none;}
     .hint{margin-top:12px; font-size:12px; color:rgba(255,255,255,.70); line-height:1.5}
     .small{font-size:13px; color:rgba(255,255,255,.78)}
-    
-    /* Chat */
     .chatWrap{height:500px; display:flex; flex-direction:column}
     .chatBox{flex:1; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:12px}
     .bubble{
@@ -344,65 +286,40 @@
       line-height:1.4;
       font-size:13px;
     }
-    .bubble.me{
-      margin-left:auto;
-      background: rgba(79,124,255,.22);
-      border-color: rgba(79,124,255,.35);
-    }
-    .chatInput{
-      display:flex; gap:10px; padding:16px;
-      border-top:1px solid rgba(255,255,255,.10);
-    }
-    .chatInput input{
-      flex:1; padding:12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color:rgba(255,255,255,.95);
-      outline:none;
-    }
-
-    /* Transaction Detail Modal */
-    .txDetailHeader{
-      display:flex; align-items:center; gap:14px; margin-bottom:20px;
-    }
-    .txDetailBadge{
-      width:56px; height:56px; border-radius:18px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.09);
-      border:1px solid rgba(255,255,255,.10);
-      font-size:28px; flex-shrink:0;
-    }
+    .bubble.me{margin-left:auto; background: rgba(79,124,255,.22); border-color: rgba(79,124,255,.35);}
+    .chatInput{display:flex; gap:10px; padding:16px; border-top:1px solid rgba(255,255,255,.10);}
+    .chatInput input{flex:1; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); color:rgba(255,255,255,.95); outline:none;}
+    .txDetailHeader{display:flex; align-items:center; gap:14px; margin-bottom:20px;}
+    .txDetailBadge{width:56px; height:56px; border-radius:18px; display:grid; place-items:center; background: rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.10); font-size:28px; flex-shrink:0;}
     .txDetailTitle{font-size:17px; font-weight:900; margin:0 0 4px}
     .txDetailSub{font-size:12px; color:rgba(255,255,255,.60)}
-    .txDetailAmount{
-      text-align:center; padding:20px;
-      border-radius:16px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      margin-bottom:16px;
-    }
+    .txDetailAmount{text-align:center; padding:20px; border-radius:16px; background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); margin-bottom:16px;}
     .txDetailAmount .amtLabel{font-size:12px; color:rgba(255,255,255,.55); margin-bottom:6px}
     .txDetailAmount .amtVal{font-size:36px; font-weight:1100}
     .txDetailAmount .amtVal.neg{color:#ff8aa3}
     .txDetailAmount .amtVal.pos{color:#8bffb1}
-    .txDetailRow{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:12px 0; border-bottom:1px solid rgba(255,255,255,.06);
-      font-size:13px;
-    }
+    .txDetailRow{display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.06); font-size:13px;}
     .txDetailRow:last-of-type{border-bottom:none}
     .txDetailRow .txKey{color:rgba(255,255,255,.55)}
     .txDetailRow .txVal{font-weight:700}
-    .deleteConfirmArea{
-      margin-top:20px; padding:16px;
-      border-radius:14px;
-      background: rgba(255,95,109,.08);
-      border:1px solid rgba(255,95,109,.18);
+    .deleteConfirmArea{margin-top:20px; padding:16px; border-radius:14px; background: rgba(255,95,109,.08); border:1px solid rgba(255,95,109,.18);}
+    .deleteConfirmArea p{font-size:13px; color:#ffd8dd; margin:0 0 12px; text-align:center;}
+
+    /* Receipt image preview */
+    .receiptPreview{
+      width:100%; max-height:200px; object-fit:contain;
+      border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      margin-top:8px; display:none;
     }
-    .deleteConfirmArea p{
-      font-size:13px; color:#ffd8dd; margin:0 0 12px; text-align:center;
+    .scanMethodBadge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 12px; border-radius:999px;
+      font-size:11px; font-weight:800;
+      margin-bottom:12px;
     }
-    
+    .scanMethodBadge.vision{background:rgba(79,124,255,.20); border:1px solid rgba(79,124,255,.35); color:#a0bbff;}
+    .scanMethodBadge.ocr{background:rgba(255,193,7,.15); border:1px solid rgba(255,193,7,.25); color:#fff3cd;}
+
     @media (max-width: 768px) {
       .statsGrid{grid-template-columns:1fr}
       .chartWrap{height:250px}
@@ -424,20 +341,17 @@
       </div>
     </div>
 
-    <!-- dashboard view -->
+    <!-- DASHBOARD VIEW -->
     <div class="view active" id="viewHome">
-      <!-- Summary Card -->
       <div class="card summary">
         <div class="monthRow">
           <h2 id="monthLabel">January 2026</h2>
           <span class="pill" id="currencyPill">USD</span>
         </div>
-
         <div class="balance">
           <div class="small">Net Balance</div>
           <div class="big" id="netVal">$0.00</div>
         </div>
-
         <div class="moneyRow">
           <div class="moneyBox income">
             <div class="lbl">Income</div>
@@ -448,17 +362,14 @@
             <div class="val" id="expenseVal">$0.00</div>
           </div>
         </div>
-
         <div class="cats" id="catChips"></div>
       </div>
 
-      <!-- Budget Alerts -->
       <div id="budgetAlertsSection" style="display:none">
         <div class="sectionTitle">Budget Alerts</div>
         <div class="card alerts" id="budgetAlerts"></div>
       </div>
 
-      <!-- Budget Goals -->
       <div class="sectionTitle">
         <div>Budget Goals</div>
         <button class="btn ghost" id="btnAddGoal" style="padding:8px 14px; border-radius:12px; font-size:12px; font-weight:800;">+ Add Goal</button>
@@ -467,7 +378,6 @@
         <div class="emptyGoals">No budget goals set. Tap "+ Add Goal" to get started.</div>
       </div>
 
-      <!-- Stats Grid -->
       <div class="sectionTitle">Quick Stats</div>
       <div class="statsGrid">
         <div class="card statCard">
@@ -482,24 +392,16 @@
         </div>
       </div>
 
-      <!-- Charts -->
       <div class="sectionTitle">Analytics</div>
-      
       <div class="card chartCard">
         <h3>Monthly Trend (Last 6 Months)</h3>
-        <div class="chartWrap">
-          <canvas id="trendChart"></canvas>
-        </div>
+        <div class="chartWrap"><canvas id="trendChart"></canvas></div>
       </div>
-
       <div class="card chartCard">
         <h3>Spending by Category</h3>
-        <div class="chartWrap">
-          <canvas id="pieChart"></canvas>
-        </div>
+        <div class="chartWrap"><canvas id="pieChart"></canvas></div>
       </div>
 
-      <!-- Recent Transactions -->
       <div class="sectionTitle">
         <div>Recent Transactions</div>
         <div class="link" id="btnRefresh">Refresh</div>
@@ -522,7 +424,6 @@
       </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <div class="bottom">
       <div class="dock">
         <button class="navbtn active" id="navHome">🏠</button>
@@ -546,37 +447,26 @@
           <button data-type="expense" class="active">Expense</button>
           <button data-type="income">Income</button>
         </div>
-
         <div class="field">
           <label>Amount</label>
           <input id="amount" type="number" step="0.01" placeholder="18.99" />
         </div>
-
         <div class="field">
           <label>Category</label>
           <select id="category">
-            <option>Food</option>
-            <option>Transport</option>
-            <option>Shopping</option>
-            <option>Utilities</option>
-            <option>Entertainment</option>
-            <option>Health</option>
-            <option>Rent</option>
-            <option>Salary</option>
-            <option>Other</option>
+            <option>Food</option><option>Transport</option><option>Shopping</option>
+            <option>Utilities</option><option>Entertainment</option><option>Health</option>
+            <option>Rent</option><option>Salary</option><option>Other</option>
           </select>
         </div>
-
         <div class="field">
           <label>Note</label>
           <input id="note" placeholder="Grocery, Uber, etc." />
         </div>
-
         <div class="field">
           <label>Date</label>
           <input id="date" type="date" />
         </div>
-
         <div class="actions">
           <button class="btn primary" id="btnSaveEntry">Save</button>
         </div>
@@ -601,32 +491,35 @@
         <div class="field">
           <label>Upload Receipt Image(s)</label>
           <input id="receiptFiles" type="file" accept="image/*" multiple />
+          <img id="receiptPreviewImg" class="receiptPreview" alt="Receipt preview" />
         </div>
+
+        <div id="scanMethodIndicator" style="display:none; margin-bottom:12px;"></div>
 
         <div class="actions">
           <button class="btn primary" id="btnRunOCR">Scan & Parse</button>
         </div>
 
-        <div class="hint" id="ocrHint">Upload receipt → AI extracts data → Verify → Save</div>
+        <div class="hint" id="ocrHint">Upload receipt → AI Vision reads it directly → Verify → Save</div>
 
         <div id="verificationSection" style="display:none; margin-top:20px;">
           <div class="sectionTitle" style="margin-top:0">
-            <div>📋 Verify Extracted Data</div>
+            <div>Verify Extracted Data</div>
             <div class="small" id="extractedCount"></div>
           </div>
-          
           <div id="extractedItems" class="list"></div>
-          
           <div class="actions" style="margin-top:16px;">
             <button class="btn ghost" id="btnCancelReceipt">Cancel</button>
             <button class="btn primary" id="btnConfirmReceipt">✓ Confirm & Save All</button>
           </div>
         </div>
 
-        <div class="field">
-          <label>OCR Output (Debug)</label>
-          <textarea id="ocrText" placeholder="OCR result..." style="font-size:11px;"></textarea>
-        </div>
+        <details style="margin-top:16px;">
+          <summary style="font-size:12px; color:rgba(255,255,255,.50); cursor:pointer;">Debug / OCR Output</summary>
+          <div class="field" style="margin-top:8px;">
+            <textarea id="ocrText" placeholder="OCR result..." style="font-size:11px; min-height:60px;"></textarea>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -640,35 +533,28 @@
       </div>
       <div class="sheetBody">
         <div class="hint">Say: "Grocery 18.99", "Uber 12.50", "Salary 3500", or "Coffee 5 and lunch 12"</div>
-
         <div class="actions">
           <button class="btn ghost" id="btnStartVoice">▶ Start Recording</button>
           <button class="btn danger" id="btnStopVoice">■ Stop</button>
         </div>
-
         <div class="field">
           <label>Transcript</label>
           <textarea id="voiceText" placeholder="Your speech will appear here..."></textarea>
         </div>
-
         <div class="actions">
           <button class="btn primary" id="btnVoiceParse">Parse with AI</button>
         </div>
-
         <div id="voiceVerificationSection" style="display:none; margin-top:20px;">
           <div class="sectionTitle" style="margin-top:0">
-            <div>📋 Verify Parsed Data</div>
+            <div>Verify Parsed Data</div>
             <div class="small" id="voiceParsedCount"></div>
           </div>
-          
           <div id="voiceParsedItems" class="list"></div>
-          
           <div class="actions" style="margin-top:16px;">
             <button class="btn ghost" id="btnCancelVoice">Cancel</button>
             <button class="btn primary" id="btnConfirmVoice">✓ Confirm & Save</button>
           </div>
         </div>
-
         <div class="hint" id="voiceParsedHint"></div>
       </div>
     </div>
@@ -685,24 +571,16 @@
         <div class="field">
           <label>Category</label>
           <select id="goalCategory">
-            <option>Food</option>
-            <option>Transport</option>
-            <option>Shopping</option>
-            <option>Utilities</option>
-            <option>Entertainment</option>
-            <option>Health</option>
-            <option>Rent</option>
-            <option>Other</option>
+            <option>Food</option><option>Transport</option><option>Shopping</option>
+            <option>Utilities</option><option>Entertainment</option><option>Health</option>
+            <option>Rent</option><option>Other</option>
           </select>
         </div>
-
         <div class="field">
           <label>Monthly Limit ($)</label>
           <input id="goalLimit" type="number" step="0.01" min="1" placeholder="e.g. 300" />
         </div>
-
         <div class="hint">You'll be alerted when you reach 80% or exceed this limit.</div>
-
         <div class="actions">
           <button class="btn ghost" id="btnCancelGoal">Cancel</button>
           <button class="btn primary" id="btnSaveGoal">Save Goal</button>
@@ -718,15 +596,11 @@
         <b>Transaction Details</b>
         <button class="iconbtn" id="closeTxDetail">✕</button>
       </div>
-      <div class="sheetBody" id="txDetailBody">
-        <!-- Filled dynamically -->
-      </div>
+      <div class="sheetBody" id="txDetailBody"></div>
     </div>
   </div>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-  <!-- Tesseract.js -->
   <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <script>
@@ -745,13 +619,13 @@
     let currentGoals = [];
     let currentSpending = {};
     let selectedTx = null;
+    let capturedImageBase64 = null;
+    let capturedImageMediaType = null;
 
-    // Auth check
     if (!token) {
       window.location.href = "index.html";
     }
 
-    // Helper functions
     function todayISO(){
       const d = new Date();
       const pad = (x)=> String(x).padStart(2,"0");
@@ -760,20 +634,15 @@
 
     function fmtMoney(n){
       const sign = n < 0 ? "-" : "";
-      const abs = Math.abs(n);
-      return sign + "$" + abs.toFixed(2);
+      return sign + "$" + Math.abs(n).toFixed(2);
     }
 
     function monthLabel(){
-      const d = new Date();
-      return d.toLocaleString(undefined, {month:"long", year:"numeric"});
+      return new Date().toLocaleString(undefined, {month:"long", year:"numeric"});
     }
 
     function escapeHtml(s){
-      return String(s||"")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;");
+      return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
     }
 
     function iconForCategory(cat){
@@ -792,19 +661,13 @@
     function sourceLabel(src){
       if(src === "receipt") return "📷 Receipt scan";
       if(src === "voice") return "🎙️ Voice entry";
-      return "Manual";
+      return "✏️ Manual";
     }
 
-    // API calls
     async function apiGet(path){
-      const res = await fetch(API_BASE + path, {
-        headers: {"Authorization": `Bearer ${token}`}
-      });
+      const res = await fetch(API_BASE + path, {headers: {"Authorization": `Bearer ${token}`}});
       if (!res.ok) {
-        if (res.status === 401) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
+        if (res.status === 401) { localStorage.clear(); window.location.href = "index.html"; }
         throw new Error(await res.text());
       }
       return res.json();
@@ -813,50 +676,46 @@
     async function apiPost(path, body){
       const res = await fetch(API_BASE + path, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
         body: JSON.stringify(body)
       });
       if (!res.ok) {
-        if (res.status === 401) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
+        if (res.status === 401) { localStorage.clear(); window.location.href = "index.html"; }
         throw new Error(await res.text());
       }
       return res.json();
     }
 
     async function apiDelete(path){
-      const res = await fetch(API_BASE + path, {
-        method: "DELETE",
-        headers: {"Authorization": `Bearer ${token}`}
-      });
+      const res = await fetch(API_BASE + path, {method: "DELETE", headers: {"Authorization": `Bearer ${token}`}});
       if (!res.ok) {
-        if (res.status === 401) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
+        if (res.status === 401) { localStorage.clear(); window.location.href = "index.html"; }
         throw new Error(await res.text());
       }
-      // Some DELETE endpoints return 204 No Content
       const text = await res.text();
       return text ? JSON.parse(text) : {};
     }
+    async function apiPut(path, body){
+      const res = await fetch(API_BASE + path, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        if (res.status === 401) { localStorage.clear(); window.location.href = "index.html"; }
+        throw new Error(await res.text());
+      }
+      return res.json();
+    }
 
-    // Logout
     $("btnLogout").addEventListener("click", () => {
       localStorage.clear();
       window.location.href = "index.html";
     });
 
-    // Navigation
     function showView(id){
       ["viewHome", "viewChat"].forEach(v => $(v).classList.remove("active"));
       $(id).classList.add("active");
-      
       document.querySelectorAll(".navbtn").forEach(btn => btn.classList.remove("active"));
       if (id === "viewHome") $("navHome").classList.add("active");
       if (id === "viewChat") $("navChat").classList.add("active");
@@ -866,21 +725,18 @@
     $("navChat").onclick = () => { showView("viewChat"); bootstrapChat(); };
     $("btnCloseChat").onclick = () => showView("viewHome");
 
-    // Overlays
     function openOverlay(id){ $(id).classList.add("show"); }
     function closeOverlay(id){ $(id).classList.remove("show"); }
 
     $("navAdd").onclick = () => openOverlay("overlayAdd");
     $("navScan").onclick = () => openOverlay("overlayScan");
     $("navVoice").onclick = () => openOverlay("overlayVoice");
-
     $("closeAdd").onclick = () => closeOverlay("overlayAdd");
     $("closeScan").onclick = () => closeOverlay("overlayScan");
     $("closeVoice").onclick = () => closeOverlay("overlayVoice");
     $("closeGoal").onclick = () => closeOverlay("overlayGoal");
     $("closeTxDetail").onclick = () => closeOverlay("overlayTxDetail");
 
-    // Segments
     $("typeSeg").addEventListener("click",(e)=>{
       const btn = e.target.closest("button");
       if(!btn) return;
@@ -897,9 +753,40 @@
       btn.classList.add("active");
     });
 
-    // -----------------------------------------------
-    // BUDGET GOALS
-    // -----------------------------------------------
+    // Show image preview when file is selected
+    $("receiptFiles").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) { $("receiptPreviewImg").style.display = "none"; return; }
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        $("receiptPreviewImg").src = ev.target.result;
+        $("receiptPreviewImg").style.display = "block";
+      };
+      reader.readAsDataURL(file);
+
+      // Pre-load the base64 for the first image (used for vision API)
+      capturedImageBase64 = null;
+      capturedImageMediaType = null;
+      const b64reader = new FileReader();
+      b64reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        const [header, data] = dataUrl.split(",");
+        const mediaType = header.match(/:(.*?);/)[1];
+        capturedImageBase64 = data;
+        capturedImageMediaType = mediaType;
+
+        // Show method indicator
+        $("scanMethodIndicator").style.display = "block";
+        $("scanMethodIndicator").innerHTML = `
+          <div class="scanMethodBadge vision">
+            ✨ AI Vision enabled — high accuracy reading
+          </div>
+        `;
+      };
+      b64reader.readAsDataURL(file);
+    });
+
     $("btnAddGoal").addEventListener("click", () => {
       $("goalLimit").value = "";
       openOverlay("overlayGoal");
@@ -910,12 +797,7 @@
     $("btnSaveGoal").addEventListener("click", async () => {
       const category = $("goalCategory").value;
       const monthly_limit = parseFloat($("goalLimit").value);
-
-      if (!monthly_limit || monthly_limit <= 0) {
-        alert("Please enter a valid monthly limit.");
-        return;
-      }
-
+      if (!monthly_limit || monthly_limit <= 0) { alert("Please enter a valid monthly limit."); return; }
       try {
         $("btnSaveGoal").disabled = true;
         $("btnSaveGoal").textContent = "Saving...";
@@ -936,8 +818,6 @@
         await apiDelete(`/budget-goals/${encodeURIComponent(category)}`);
         await refreshUI();
       } catch(e) {
-
-        // Try posting a replacement — but first, inform user
         alert("Could not delete goal. Your backend may need a DELETE /budget-goals/{category} endpoint.");
       }
     }
@@ -947,7 +827,6 @@
         $("goalsCard").innerHTML = `<div class="emptyGoals">No budget goals set. Tap "+ Add Goal" to get started.</div>`;
         return;
       }
-
       $("goalsCard").innerHTML = goals.map(g => {
         const spent = spending[g.category] || 0;
         const limit = parseFloat(g.monthly_limit);
@@ -957,10 +836,7 @@
         const fillClass = isOver ? "over" : isWarn ? "warn" : "";
         const statusText = isOver
           ? `<span style="color:#ff8aa3; font-size:10px;">⚠ Over budget</span>`
-          : isWarn
-          ? `<span style="color:#fbbf24; font-size:10px;">⚠ Near limit</span>`
-          : "";
-
+          : isWarn ? `<span style="color:#fbbf24; font-size:10px;">⚠ Near limit</span>` : "";
         return `
           <div class="goalItem">
             <div class="goalLeft">
@@ -968,19 +844,14 @@
               <div class="goalInfo">
                 <div class="goalName">${escapeHtml(g.category)} ${statusText}</div>
                 <div class="goalLimit">${fmtMoney(spent)} of ${fmtMoney(limit)} / month</div>
-                <div class="goalBar">
-                  <div class="goalBarFill ${fillClass}" style="width:${pct}%"></div>
-                </div>
+                <div class="goalBar"><div class="goalBarFill ${fillClass}" style="width:${pct}%"></div></div>
               </div>
             </div>
             <button class="goalDeleteBtn" onclick="deleteGoal('${escapeHtml(g.category)}')" title="Delete goal">🗑</button>
-          </div>
-        `;
+          </div>`;
       }).join("");
     }
 
-
-    // TRANSACTION DETAIL + DELETE
     function openTxDetail(tx) {
       selectedTx = tx;
       const amt = tx.type === "expense" ? -Math.abs(tx.amount) : Math.abs(tx.amount);
@@ -988,48 +859,116 @@
       const signAmt = (amt >= 0 ? "+" : "") + fmtMoney(amt);
 
       $("txDetailBody").innerHTML = `
-        <div class="txDetailHeader">
-          <div class="txDetailBadge">${iconForCategory(tx.category)}</div>
-          <div>
-            <div class="txDetailTitle">${escapeHtml(tx.note || tx.category)}</div>
-            <div class="txDetailSub">${escapeHtml(tx.category)} • ${escapeHtml(tx.date)}</div>
+        <!-- View mode -->
+        <div id="txViewMode">
+          <div class="txDetailHeader">
+            <div class="txDetailBadge">${iconForCategory(tx.category)}</div>
+            <div>
+              <div class="txDetailTitle">${escapeHtml(tx.note || tx.category)}</div>
+              <div class="txDetailSub">${escapeHtml(tx.category)} • ${escapeHtml(tx.date)}</div>
+            </div>
           </div>
-        </div>
-
-        <div class="txDetailAmount">
-          <div class="amtLabel">${tx.type === "expense" ? "Expense" : "Income"}</div>
-          <div class="amtVal ${amtClass}">${signAmt}</div>
-        </div>
-
-        <div class="txDetailRow">
-          <span class="txKey">Category</span>
-          <span class="txVal">${escapeHtml(tx.category)}</span>
-        </div>
-        <div class="txDetailRow">
-          <span class="txKey">Date</span>
-          <span class="txVal">${escapeHtml(tx.date)}</span>
-        </div>
-        <div class="txDetailRow">
-          <span class="txKey">Source</span>
-          <span class="txVal">${sourceLabel(tx.source)}</span>
-        </div>
-        ${tx.note ? `
-        <div class="txDetailRow">
-          <span class="txKey">Note</span>
-          <span class="txVal">${escapeHtml(tx.note)}</span>
-        </div>` : ""}
-
-        <div class="deleteConfirmArea">
-          <p>Delete this transaction permanently?</p>
-          <div style="display:flex; gap:10px;">
-            <button class="btn ghost" style="flex:1;" onclick="closeOverlay('overlayTxDetail')">Cancel</button>
+          <div class="txDetailAmount">
+            <div class="amtLabel">${tx.type === "expense" ? "Expense" : "Income"}</div>
+            <div class="amtVal ${amtClass}">${signAmt}</div>
+          </div>
+          <div class="txDetailRow"><span class="txKey">Category</span><span class="txVal">${escapeHtml(tx.category)}</span></div>
+          <div class="txDetailRow"><span class="txKey">Date</span><span class="txVal">${escapeHtml(tx.date)}</span></div>
+          <div class="txDetailRow"><span class="txKey">Source</span><span class="txVal">${sourceLabel(tx.source)}</span></div>
+          ${tx.note ? `<div class="txDetailRow"><span class="txKey">Note</span><span class="txVal">${escapeHtml(tx.note)}</span></div>` : ""}
+          <div style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn ghost" style="flex:1;" onclick="switchToEditMode()">✏️ Edit</button>
             <button class="btn dangerSolid" style="flex:1;" onclick="deleteTx(${tx.id})">🗑 Delete</button>
           </div>
         </div>
-      `;
+
+        <!-- Edit mode (hidden initially) -->
+        <div id="txEditMode" style="display:none;">
+          <div class="sectionTitle" style="margin-top:0; margin-bottom:16px;">✏️ Edit Transaction</div>
+          <div class="seg" id="editTypeSeg">
+            <button data-type="expense" class="${tx.type === 'expense' ? 'active' : ''}">Expense</button>
+            <button data-type="income" class="${tx.type === 'income' ? 'active' : ''}">Income</button>
+          </div>
+          <div class="field">
+            <label>Amount</label>
+            <input id="editAmount" type="number" step="0.01" value="${tx.amount}" />
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="editCategory">
+              ${["Food","Transport","Shopping","Utilities","Entertainment","Health","Rent","Salary","Other"].map(cat =>
+                `<option value="${cat}" ${cat === tx.category ? "selected" : ""}>${cat}</option>`
+              ).join("")}
+            </select>
+          </div>
+          <div class="field">
+            <label>Note</label>
+            <input id="editNote" type="text" value="${escapeHtml(tx.note || '')}" />
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input id="editDate" type="date" value="${tx.date}" max="${todayISO()}" />
+          </div>
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button class="btn ghost" onclick="switchToViewMode()">Cancel</button>
+            <button class="btn primary" style="flex:1;" onclick="saveEditTx(${tx.id})">💾 Save Changes</button>
+          </div>
+        </div>`;
+
+      // Wire up the type toggle inside the edit form
+      $("txDetailBody").querySelector("#editTypeSeg").addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        [...$("editTypeSeg").querySelectorAll("button")].forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
 
       openOverlay("overlayTxDetail");
     }
+
+    function switchToEditMode() {
+      $("txViewMode").style.display = "none";
+      $("txEditMode").style.display = "block";
+    }
+
+    function switchToViewMode() {
+      $("txEditMode").style.display = "none";
+      $("txViewMode").style.display = "block";
+    }
+
+    async function saveEditTx(id) {
+      const typeBtn = $("editTypeSeg").querySelector("button.active");
+      const type = typeBtn ? typeBtn.dataset.type : "expense";
+      const amount = parseFloat($("editAmount").value);
+      const category = $("editCategory").value;
+      const note = $("editNote").value.trim();
+      const date = $("editDate").value;
+
+      if (!amount || amount <= 0) { alert("Please enter a valid amount."); return; }
+      if (!date) { alert("Please enter a valid date."); return; }
+
+      const today = new Date(); today.setHours(0,0,0,0);
+      if (new Date(date + "T00:00:00") > today) { alert("❌ Cannot set a future date."); return; }
+
+      const btn = $("txDetailBody").querySelector("button[onclick*='saveEditTx']");
+      try {
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+        await apiPut(`/transactions/${id}`, { type, amount, category, note, date });
+        closeOverlay("overlayTxDetail");
+        selectedTx = null;
+        await refreshUI();
+      } catch(e) {
+        alert("Update failed: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "💾 Save Changes";
+      }
+    }
+
+    window.switchToEditMode = switchToEditMode;
+    window.switchToViewMode = switchToViewMode;
+    window.saveEditTx = saveEditTx;
 
     async function deleteTx(id) {
       try {
@@ -1042,47 +981,36 @@
       }
     }
 
-    // Make these accessible from inline onclick
     window.deleteGoal = deleteGoal;
     window.deleteTx = deleteTx;
 
-    // Load UI
     async function refreshUI(){
       try {
         $("subtitle").textContent = `Welcome, ${user.full_name || user.email}!`;
         $("monthLabel").textContent = monthLabel();
         $("currencyPill").textContent = user.currency || "USD";
-        
+
         const today = todayISO();
         $("date").value = today;
         $("date").setAttribute("max", today);
 
-        // Summary
         const summary = await apiGet("/summary");
         $("incomeVal").textContent = fmtMoney(summary.income);
         $("expenseVal").textContent = fmtMoney(summary.expense);
         $("netVal").textContent = fmtMoney(summary.net);
-
-        // Store spending for goals display
         currentSpending = summary.by_category || {};
 
-        // Categories
         const cats = summary.by_category || {};
         const entries = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6);
-        if(entries.length === 0){
-          $("catChips").innerHTML = `<div class="catChip"><b>No data</b><span>Add entries</span></div>`;
-        } else {
-          $("catChips").innerHTML = entries.map(([cat, amt])=>
-            `<div class="catChip"><b>${escapeHtml(cat)}</b><span>${fmtMoney(amt)}</span></div>`
-          ).join("");
-        }
+        $("catChips").innerHTML = entries.length === 0
+          ? `<div class="catChip"><b>No data</b><span>Add entries</span></div>`
+          : entries.map(([cat, amt])=>`<div class="catChip"><b>${escapeHtml(cat)}</b><span>${fmtMoney(amt)}</span></div>`).join("");
 
-        // Budget alerts
         if (summary.budget_alerts && summary.budget_alerts.length > 0) {
           $("budgetAlertsSection").style.display = "block";
           $("budgetAlerts").innerHTML = summary.budget_alerts.map(alert => {
             const cls = alert.status === "exceeded" ? "danger" : "warning";
-            const msg = alert.status === "exceeded" 
+            const msg = alert.status === "exceeded"
               ? `Over budget! ${alert.category}: ${fmtMoney(alert.spent)} / ${fmtMoney(alert.limit)}`
               : `Warning: ${alert.category}: ${fmtMoney(alert.spent)} / ${fmtMoney(alert.limit)}`;
             return `<div class="alert ${cls}">${msg}</div>`;
@@ -1091,101 +1019,54 @@
           $("budgetAlertsSection").style.display = "none";
         }
 
-        // Budget Goals
         const goalsData = await apiGet("/budget-goals");
         currentGoals = goalsData.goals || [];
         renderGoals(currentGoals, currentSpending);
 
-        // Analytics
         const analytics = await apiGet("/analytics");
-        
         $("savingsRate").textContent = analytics.savings_rate.toFixed(1) + "%";
         $("savingsChange").textContent = analytics.savings_rate >= 20 ? "Great!" : "Try to save more";
         $("avgDaily").textContent = fmtMoney(analytics.avg_daily_spend);
 
-        // Monthly Trend Chart
         if (trendChart) trendChart.destroy();
-        const trendCtx = $("trendChart").getContext("2d");
-        trendChart = new Chart(trendCtx, {
+        trendChart = new Chart($("trendChart").getContext("2d"), {
           type: "line",
           data: {
             labels: analytics.monthly_trend.map(m => m.month),
             datasets: [
-              {
-                label: "Income",
-                data: analytics.monthly_trend.map(m => m.income),
-                borderColor: "#8bffb1",
-                backgroundColor: "rgba(139,255,177,0.1)",
-                tension: 0.4
-              },
-              {
-                label: "Expense",
-                data: analytics.monthly_trend.map(m => m.expense),
-                borderColor: "#ff8aa3",
-                backgroundColor: "rgba(255,138,163,0.1)",
-                tension: 0.4
-              }
+              {label: "Income", data: analytics.monthly_trend.map(m => m.income), borderColor: "#8bffb1", backgroundColor: "rgba(139,255,177,0.1)", tension: 0.4},
+              {label: "Expense", data: analytics.monthly_trend.map(m => m.expense), borderColor: "#ff8aa3", backgroundColor: "rgba(255,138,163,0.1)", tension: 0.4}
             ]
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { color: "#f4f6ff" }
-              }
-            },
+            responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {labels: {color: "#f4f6ff"}}},
             scales: {
-              y: {
-                beginAtZero: true,
-                ticks: { color: "#a8b0d3" },
-                grid: { color: "rgba(255,255,255,0.05)" }
-              },
-              x: {
-                ticks: { color: "#a8b0d3" },
-                grid: { color: "rgba(255,255,255,0.05)" }
-              }
+              y: {beginAtZero: true, ticks: {color: "#a8b0d3"}, grid: {color: "rgba(255,255,255,0.05)"}},
+              x: {ticks: {color: "#a8b0d3"}, grid: {color: "rgba(255,255,255,0.05)"}}
             }
           }
         });
 
-        // Pie Chart
         if (pieChart) pieChart.destroy();
-        const pieCtx = $("pieChart").getContext("2d");
-        const colors = ["#4f7cff", "#6a5cff", "#ff5f6d", "#22c55e", "#fbbf24", "#8b5cf6", "#ec4899"];
-        pieChart = new Chart(pieCtx, {
+        const colors = ["#4f7cff","#6a5cff","#ff5f6d","#22c55e","#fbbf24","#8b5cf6","#ec4899"];
+        pieChart = new Chart($("pieChart").getContext("2d"), {
           type: "doughnut",
           data: {
             labels: analytics.category_breakdown.map(c => c.category),
-            datasets: [{
-              data: analytics.category_breakdown.map(c => c.amount),
-              backgroundColor: colors,
-              borderWidth: 2,
-              borderColor: "#121a33"
-            }]
+            datasets: [{data: analytics.category_breakdown.map(c => c.amount), backgroundColor: colors, borderWidth: 2, borderColor: "#121a33"}]
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: { color: "#f4f6ff", padding: 15 }
-              }
-            }
+            responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {position: "bottom", labels: {color: "#f4f6ff", padding: 15}}}
           }
         });
 
-        // Recent transactions
         const txs = await apiGet("/transactions?limit=10");
         renderRecent(txs.items || []);
-
       } catch (err) {
         console.error("Load error:", err);
-        if (err.message.includes("401")) {
-          localStorage.clear();
-          window.location.href = "index.html";
-        }
+        if (err.message.includes("401")) { localStorage.clear(); window.location.href = "index.html"; }
       }
     }
 
@@ -1211,52 +1092,33 @@
               <div class="amt ${cls}">${signAmt}</div>
               <div style="font-size:16px; color:rgba(255,255,255,.30);">›</div>
             </div>
-          </div>
-        `;
+          </div>`;
       }).join("");
 
-      // Attach click listeners — store the tx data on each row
       $("recentList").querySelectorAll(".row").forEach(row => {
         const id = parseInt(row.dataset.id);
         const tx = items.find(i => i.id === id);
-        if (tx) {
-          row.addEventListener("click", () => openTxDetail(tx));
-        }
+        if (tx) row.addEventListener("click", () => openTxDetail(tx));
       });
     }
 
     $("btnRefresh").onclick = refreshUI;
 
-    // Add Transaction
     $("btnSaveEntry").addEventListener("click", async ()=>{
       const amount = parseFloat($("amount").value);
       const category = $("category").value;
       const note = $("note").value.trim();
       const date = $("date").value || todayISO();
 
-      if(!amount || amount<=0){
-        alert("Please enter a valid amount.");
-        return;
-      }
+      if(!amount || amount<=0){ alert("Please enter a valid amount."); return; }
 
-      const selectedDate = new Date(date + 'T00:00:00');
+      const selectedDate = new Date(date + "T00:00:00");
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
-      if(selectedDate > today){
-        alert("Cannot add transactions for future dates. Please select today or a past date.");
-        return;
-      }
+      if(selectedDate > today){ alert("Cannot add transactions for future dates."); return; }
 
       try{
-        await apiPost("/transactions", {
-          type: entryType,
-          amount,
-          category,
-          note,
-          date,
-          source: "manual"
-        });
+        await apiPost("/transactions", {type: entryType, amount, category, note, date, source: "manual"});
         closeOverlay("overlayAdd");
         $("amount").value = "";
         $("note").value = "";
@@ -1267,113 +1129,146 @@
       }
     });
 
-    // Receipt OCR with Verification
+    // RECEIPT OCR — Vision-first approach
     let extractedReceiptData = [];
-    
+
     $("btnRunOCR").addEventListener("click", async ()=>{
       const files = $("receiptFiles").files;
-      if(!files || files.length===0) { alert("Choose image(s) first."); return; }
+      if(!files || files.length===0){ alert("Choose image(s) first."); return; }
 
-      $("ocrText").value = "Running OCR... (this may take 10-30 seconds)\n";
       $("btnRunOCR").disabled = true;
       $("btnRunOCR").textContent = "Processing...";
-      
-      let combinedText = "";
+      $("ocrHint").textContent = "AI Vision is reading your receipt...";
 
+      try {
+        // If we have the image as base64 (pre-loaded), send it directly to vision API
+        if (capturedImageBase64 && capturedImageMediaType) {
+          $("ocrHint").textContent = "✨ Using AI Vision for best accuracy...";
+          const res = await apiPost("/receipt/parse", {
+            mode: scanMode,
+            ocr_text: "",
+            image_base64: capturedImageBase64,
+            image_media_type: capturedImageMediaType
+          });
+
+          extractedReceiptData = res.extracted || [];
+          $("ocrText").value = `Vision API used. Found ${extractedReceiptData.length} item(s).`;
+
+          if(extractedReceiptData.length === 0){
+            // Fall back to Tesseract OCR if vision returned nothing
+            $("ocrHint").textContent = "Vision found nothing, running OCR fallback...";
+            await runTesseractFallback(files);
+            return;
+          }
+
+          displayVerificationUI(extractedReceiptData);
+          $("ocrHint").textContent = `Vision extracted ${extractedReceiptData.length} item(s). Please verify.`;
+          return;
+        }
+
+        // No image base64 available — run Tesseract then send OCR text
+        await runTesseractFallback(files);
+
+      } catch(e) {
+        alert("Scan failed: " + e.message);
+        $("ocrHint").textContent = "Failed. Please try again.";
+        resetOCRForm();
+      }
+    });
+
+    async function runTesseractFallback(files) {
+      $("ocrHint").textContent = "Running OCR text recognition...";
+      $("scanMethodIndicator").innerHTML = `<div class="scanMethodBadge ocr">⚠️ OCR fallback mode — accuracy may vary</div>`;
+      $("scanMethodIndicator").style.display = "block";
+
+      let combinedText = "";
       for(let i=0; i<files.length; i++){
         const f = files[i];
-        $("ocrText").value += `\n[${i+1}/${files.length}] Processing: ${f.name}\n`;
         try{
           const { data } = await Tesseract.recognize(f, "eng", {
             logger: m => {
-              if(m.status === 'recognizing text'){
-                $("btnRunOCR").textContent = `Processing... ${Math.round(m.progress * 100)}%`;
+              if(m.status === "recognizing text"){
+                $("btnRunOCR").textContent = `OCR ${Math.round(m.progress * 100)}%`;
               }
             }
           });
-          const text = (data && data.text) ? data.text : "";
-          combinedText += "\n" + text;
-          $("ocrText").value += text.slice(0, 500) + "\n---\n";
+          combinedText += "\n" + ((data && data.text) ? data.text : "");
         } catch(err){
           $("ocrText").value += `OCR failed: ${err}\n`;
         }
       }
 
-      try{
-        $("ocrText").value += "\n AI is analyzing the receipt...\n";
-        
-        const res = await apiPost("/receipt/parse", {
-          mode: scanMode,
-          ocr_text: combinedText
-        });
-        
-        extractedReceiptData = res.extracted || [];
-        
-        $("ocrText").value += `\n✅ Found ${extractedReceiptData.length} item(s)\n`;
-        
-        if(extractedReceiptData.length === 0){
-          alert("No valid transactions found. Please try a clearer image.");
-          resetOCRForm();
-          return;
-        }
-        
-        displayVerificationUI(extractedReceiptData);
-        
-      } catch(e){
-        alert("AI parsing failed: " + e.message);
-        $("ocrText").value += `\n Error: ${e.message}\n`;
+      $("ocrText").value = combinedText.trim();
+      $("ocrHint").textContent = "AI is analyzing the OCR text...";
+
+      const res = await apiPost("/receipt/parse", {
+        mode: scanMode,
+        ocr_text: combinedText,
+        image_base64: null,
+        image_media_type: null
+      });
+
+      extractedReceiptData = res.extracted || [];
+
+      if(extractedReceiptData.length === 0){
+        alert("No valid transactions found. Please try a clearer image.");
         resetOCRForm();
+        return;
       }
-    });
+
+      displayVerificationUI(extractedReceiptData);
+      $("ocrHint").textContent = `Found ${extractedReceiptData.length} item(s). Please verify.`;
+    }
 
     function displayVerificationUI(items){
       $("verificationSection").style.display = "block";
       $("extractedCount").textContent = `${items.length} item(s) found`;
-      
+
       $("extractedItems").innerHTML = items.map((item, idx) => `
         <div class="row" style="flex-direction:column; align-items:stretch; padding:16px;" data-idx="${idx}">
           <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
             <div>
-              <div style="font-weight:800; font-size:14px;">${escapeHtml(item.merchant || 'Unknown')}</div>
+              <div style="font-weight:800; font-size:14px;">${escapeHtml(item.merchant || "Unknown")}</div>
               <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">
-                ${item.confidence === 'high' ? 'High confidence' : item.confidence === 'medium' ? 'Medium confidence' : 'Low confidence - please verify'}
+                ${item.confidence === "high" ? "High confidence" : item.confidence === "medium" ? "Medium confidence" : "Low confidence — please verify"}
               </div>
             </div>
             <div style="font-size:20px; font-weight:1000;">${item.amount.toFixed(2)}</div>
           </div>
-          
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
             <div class="field" style="margin:0;">
               <label style="font-size:11px;">Amount</label>
-              <input type="number" step="0.01" value="${item.amount}" 
+              <input type="number" step="0.01" value="${item.amount}"
                      onchange="updateExtractedItem(${idx}, 'amount', parseFloat(this.value))"
                      style="padding:10px; font-size:14px;">
             </div>
             <div class="field" style="margin:0;">
               <label style="font-size:11px;">Category</label>
-              <select onchange="updateExtractedItem(${idx}, 'category', this.value)"
-                      style="padding:10px; font-size:14px;">
-                ${['Food','Transport','Shopping','Utilities','Entertainment','Health','Rent','Other'].map(cat => 
-                  `<option value="${cat}" ${cat === item.category ? 'selected' : ''}>${cat}</option>`
-                ).join('')}
+              <select onchange="updateExtractedItem(${idx}, 'category', this.value)" style="padding:10px; font-size:14px;">
+                ${["Food","Transport","Shopping","Utilities","Entertainment","Health","Rent","Other"].map(cat =>
+                  `<option value="${cat}" ${cat === item.category ? "selected" : ""}>${cat}</option>`
+                ).join("")}
               </select>
             </div>
           </div>
-          
           <div class="field" style="margin:10px 0 0;">
             <label style="font-size:11px;">Note</label>
-            <input type="text" value="${escapeHtml(item.note || '')}" 
+            <input type="text" value="${escapeHtml(item.note || "")}"
                    onchange="updateExtractedItem(${idx}, 'note', this.value)"
                    style="padding:10px; font-size:14px;">
           </div>
-          
-          <button class="btn danger" onclick="removeExtractedItem(${idx})" 
-                  style="margin-top:10px; padding:8px;">
-            🗑️ Remove this item
+          <div class="field" style="margin:10px 0 0;">
+            <label style="font-size:11px;">Date</label>
+            <input type="date" value="${escapeHtml(item.date || todayISO())}"
+                   onchange="updateExtractedItem(${idx}, 'date', this.value)"
+                   style="padding:10px; font-size:14px;">
+          </div>
+          <button class="btn danger" onclick="removeExtractedItem(${idx})" style="margin-top:10px; padding:8px;">
+            Remove this item
           </button>
         </div>
       `).join("");
-      
+
       $("btnRunOCR").style.display = "none";
       $("receiptFiles").disabled = true;
     }
@@ -1384,13 +1279,14 @@
       $("btnRunOCR").style.display = "block";
       $("receiptFiles").disabled = false;
       $("verificationSection").style.display = "none";
+      $("scanMethodIndicator").style.display = "none";
       extractedReceiptData = [];
+      capturedImageBase64 = null;
+      capturedImageMediaType = null;
     }
 
     window.updateExtractedItem = function(idx, field, value){
-      if(extractedReceiptData[idx]){
-        extractedReceiptData[idx][field] = value;
-      }
+      if(extractedReceiptData[idx]) extractedReceiptData[idx][field] = value;
     };
 
     window.removeExtractedItem = function(idx){
@@ -1410,31 +1306,23 @@
         resetOCRForm();
         $("receiptFiles").value = "";
         $("ocrText").value = "";
+        $("receiptPreviewImg").style.display = "none";
       }
     });
 
     $("btnConfirmReceipt").addEventListener("click", async ()=>{
-      if(extractedReceiptData.length === 0){
-        alert("No items to save.");
-        return;
-      }
-      
+      if(extractedReceiptData.length === 0){ alert("No items to save."); return; }
       try{
         $("btnConfirmReceipt").disabled = true;
         $("btnConfirmReceipt").textContent = "Saving...";
-        
-        const res = await apiPost("/receipt/confirm", {
-          entries: extractedReceiptData
-        });
-        
-        alert(`Successfully saved ${res.saved} transaction(s)!`);
-        
+        const res = await apiPost("/receipt/confirm", {entries: extractedReceiptData});
+        alert(`✅ Successfully saved ${res.saved} transaction(s)!`);
         closeOverlay("overlayScan");
         resetOCRForm();
         $("receiptFiles").value = "";
         $("ocrText").value = "";
+        $("receiptPreviewImg").style.display = "none";
         await refreshUI();
-        
       } catch(e){
         alert("Save failed: " + e.message);
       } finally {
@@ -1443,9 +1331,9 @@
       }
     });
 
-    // Voice Entry with Verification
+    // VOICE ENTRY
     let parsedVoiceData = null;
-    
+
     function speechSupported(){
       return ("webkitSpeechRecognition" in window) || ("SpeechRecognition" in window);
     }
@@ -1456,7 +1344,6 @@
       recognition.lang = "en-US";
       recognition.interimResults = true;
       recognition.continuous = true;
-
       recognition.onresult = (event)=>{
         let finalText = "";
         for(let i=event.resultIndex; i<event.results.length; i++){
@@ -1464,17 +1351,11 @@
         }
         $("voiceText").value = finalText.trim();
       };
-
-      recognition.onerror = (e)=>{
-        $("voiceParsedHint").textContent = "Voice error: " + (e.error || "unknown");
-      };
+      recognition.onerror = (e)=>{ $("voiceParsedHint").textContent = "Voice error: " + (e.error || "unknown"); };
     }
 
     $("btnStartVoice").addEventListener("click", ()=>{
-      if(!speechSupported()) { 
-        alert("Voice not supported in this browser. Use Chrome on desktop for best results."); 
-        return; 
-      }
+      if(!speechSupported()){ alert("Voice not supported. Use Chrome on desktop."); return; }
       if(!recognition) initSpeech();
       $("voiceParsedHint").textContent = "🎙️ Listening... Speak now!";
       $("btnStartVoice").disabled = true;
@@ -1491,24 +1372,17 @@
 
     $("btnVoiceParse").addEventListener("click", async ()=>{
       const text = $("voiceText").value.trim();
-      if(!text) { 
-        alert("Please record something first."); 
-        return; 
-      }
-      
+      if(!text){ alert("Please record something first."); return; }
       try{
         $("btnVoiceParse").disabled = true;
         $("btnVoiceParse").textContent = "Parsing...";
         $("voiceParsedHint").textContent = "AI is analyzing your speech...";
-        
         const res = await apiPost("/voice/parse", { text });
         parsedVoiceData = res;
-        
         displayVoiceVerification(parsedVoiceData);
-        
       } catch(e){
         alert("Parse failed: " + e.message);
-        $("voiceParsedHint").textContent = "❌ Parsing failed. Try again.";
+        $("voiceParsedHint").textContent = "Parsing failed. Try again.";
       } finally {
         $("btnVoiceParse").disabled = false;
         $("btnVoiceParse").textContent = "Parse with AI";
@@ -1518,56 +1392,43 @@
     function displayVoiceVerification(data){
       $("voiceVerificationSection").style.display = "block";
       $("voiceParsedCount").textContent = "1 transaction detected";
-      
-      const typeColor = data.type === 'income' ? '#8bffb1' : '#ff8aa3';
-      const typeIcon = data.type === 'income' ? '💰' : '💸';
-      
+      const typeColor = data.type === "income" ? "#8bffb1" : "#ff8aa3";
+      const typeIcon = data.type === "income" ? "💰" : "💸";
       $("voiceParsedItems").innerHTML = `
         <div class="row" style="flex-direction:column; align-items:stretch; padding:16px;">
           <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
             <div>
-              <div style="font-weight:800; font-size:14px;">${typeIcon} ${data.type === 'income' ? 'Income' : 'Expense'}</div>
-              <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">
-                From voice: "${escapeHtml($("voiceText").value)}"
-              </div>
+              <div style="font-weight:800; font-size:14px;">${typeIcon} ${data.type === "income" ? "Income" : "Expense"}</div>
+              <div style="font-size:11px; color:rgba(255,255,255,.65); margin-top:2px;">From voice: "${escapeHtml($("voiceText").value)}"</div>
             </div>
-            <div style="font-size:24px; font-weight:1000; color:${typeColor};">
-              ${data.amount.toFixed(2)}
-            </div>
+            <div style="font-size:24px; font-weight:1000; color:${typeColor};">${data.amount.toFixed(2)}</div>
           </div>
-          
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
             <div class="field" style="margin:0;">
               <label style="font-size:11px;">Type</label>
               <select id="voiceEditType" style="padding:10px; font-size:14px;">
-                <option value="expense" ${data.type === 'expense' ? 'selected' : ''}>Expense</option>
-                <option value="income" ${data.type === 'income' ? 'selected' : ''}>Income</option>
+                <option value="expense" ${data.type === "expense" ? "selected" : ""}>Expense</option>
+                <option value="income" ${data.type === "income" ? "selected" : ""}>Income</option>
               </select>
             </div>
             <div class="field" style="margin:0;">
               <label style="font-size:11px;">Amount</label>
-              <input type="number" step="0.01" id="voiceEditAmount" value="${data.amount}" 
-                     style="padding:10px; font-size:14px;">
+              <input type="number" step="0.01" id="voiceEditAmount" value="${data.amount}" style="padding:10px; font-size:14px;">
             </div>
           </div>
-          
           <div class="field" style="margin:10px 0 0;">
             <label style="font-size:11px;">Category</label>
             <select id="voiceEditCategory" style="padding:10px; font-size:14px;">
-              ${['Food','Transport','Shopping','Utilities','Entertainment','Health','Rent','Salary','Other'].map(cat => 
-                `<option value="${cat}" ${cat === data.category ? 'selected' : ''}>${cat}</option>`
-              ).join('')}
+              ${["Food","Transport","Shopping","Utilities","Entertainment","Health","Rent","Salary","Other"].map(cat =>
+                `<option value="${cat}" ${cat === data.category ? "selected" : ""}>${cat}</option>`
+              ).join("")}
             </select>
           </div>
-          
           <div class="field" style="margin:10px 0 0;">
             <label style="font-size:11px;">Note</label>
-            <input type="text" id="voiceEditNote" value="${escapeHtml(data.note || '')}" 
-                   style="padding:10px; font-size:14px;">
+            <input type="text" id="voiceEditNote" value="${escapeHtml(data.note || "")}" style="padding:10px; font-size:14px;">
           </div>
-        </div>
-      `;
-      
+        </div>`;
       $("voiceParsedHint").textContent = "Parsed successfully! Review and confirm.";
       $("btnVoiceParse").style.display = "none";
     }
@@ -1588,33 +1449,23 @@
     });
 
     $("btnConfirmVoice").addEventListener("click", async ()=>{
-      if(!parsedVoiceData){
-        alert("No data to save.");
-        return;
-      }
-      
+      if(!parsedVoiceData){ alert("No data to save."); return; }
       try{
         $("btnConfirmVoice").disabled = true;
         $("btnConfirmVoice").textContent = "Saving...";
-        
-        const editedData = {
+        await apiPost("/transactions", {
           type: $("voiceEditType").value,
           amount: parseFloat($("voiceEditAmount").value),
           category: $("voiceEditCategory").value,
           note: $("voiceEditNote").value,
           date: todayISO(),
           source: "voice"
-        };
-        
-        await apiPost("/transactions", editedData);
-        
-        alert("Transaction saved successfully!");
-        
+        });
+        alert("✅ Transaction saved successfully!");
         closeOverlay("overlayVoice");
         resetVoiceForm();
         $("voiceText").value = "";
         await refreshUI();
-        
       } catch(e){
         alert("Save failed: " + e.message);
       } finally {
@@ -1623,7 +1474,7 @@
       }
     });
 
-    // Chat
+    // CHAT
     function addBubble(text, me=false){
       const div = document.createElement("div");
       div.className = "bubble" + (me ? " me" : "");
@@ -1643,7 +1494,6 @@
       if(!msg) return;
       $("chatText").value = "";
       addBubble(msg, true);
-
       try{
         const res = await apiPost("/ai/chat", { message: msg });
         addBubble(res.reply || "No reply");
@@ -1653,11 +1503,8 @@
     }
 
     $("btnSendChat").addEventListener("click", sendChat);
-    $("chatText").addEventListener("keydown", (e)=>{
-      if(e.key==="Enter") sendChat();
-    });
+    $("chatText").addEventListener("keydown", (e)=>{ if(e.key==="Enter") sendChat(); });
 
-    // Init
     refreshUI();
   </script>
 </body>
